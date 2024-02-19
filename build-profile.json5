@@ -1,0 +1,49 @@
+{
+  "app": {
+    "compileSdkVersion": 9,
+    "compatibleSdkVersion": 9,
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default"
+      }
+    ],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "/Users/anmin83/.ohos/config/auto_debug_NCMusicHarmony_com.ssk.numusic_240086000130995105.cer",
+          "storePassword": "0000001BFCE3454E712AD5A512BA6EF5D4C391A1BC7A6D8A8E76B0E935B5B6E682C0472CABCF03728F2379",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001BEC7A1A75D2C4ED5C791F39709034CA4FF78A5189EE47658C2D0B34B5B6218B2C78C1183FFE45A8",
+          "profile": "/Users/anmin83/.ohos/config/auto_debug_NCMusicHarmony_com.ssk.numusic_240086000130995105.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "/Users/anmin83/.ohos/config/auto_debug_NCMusicHarmony_com.ssk.numusic_240086000130995105.p12"
+        }
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "lib_theme",
+      "srcPath": "./lib_theme"
+    },
+    {
+      "name": "lib_common",
+      "srcPath": "./lib_common"
+    }
+  ]
+}

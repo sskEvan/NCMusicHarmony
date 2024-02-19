@@ -1,0 +1,14 @@
+{
+  "src": [
+    "pages/splash/view/Splash",
+    "pages/main/view/Main",
+    "pages/songsheet/view/SongSheetDetail",
+    "pages/play/view/MusicPlay",
+    "pages/login/view/Login",
+    "pages/dynamic/view/DynamicDetailPage",
+    "pages/pics/view/PicturePreview"
+  ],
+  "window": {
+    "autoDesignWidth": true
+  }
+}

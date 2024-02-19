@@ -1,0 +1,12 @@
+{
+  "float": [
+    {
+      "name": "app_bar_height",
+      "value": "88"
+    },
+    {
+      "name": "tab_bar_height",
+      "value": "88"
+    }
+  ]
+}

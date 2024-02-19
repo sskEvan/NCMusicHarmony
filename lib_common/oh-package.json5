@@ -1,0 +1,13 @@
+{
+  "license": "Apache-2.0",
+  "devDependencies": {},
+  "author": "",
+  "name": "lib_common",
+  "description": "Please describe the basic information.",
+  "main": "index.ets",
+  "version": "1.0.0",
+  "dependencies": {
+    "class-transformer": "^0.5.1",
+    "lib_theme": "file:../lib_theme"
+  }
+}
