@@ -1,5 +1,5 @@
 import router from '@ohos.router'
-import { ClickEffectLayout, RouterUrls, SizeConstant } from 'lib_common'
+import { ClickEffectLayout, CommonNetworkImage, RouterUrls, SizeConstant } from 'lib_common'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import { UserPlaylistBean } from '../../../..'
 
@@ -13,11 +13,12 @@ export struct CpnSongSheetItem {
       router.pushUrl({ url: RouterUrls.SongSheetDetail, params: this.playListBean })
     } }) {
       Row() {
-        Image(this.playListBean.coverImgUrl)
+        CommonNetworkImage({url: this.playListBean.coverImgUrl})
           .width(48)
           .height(48)
           .borderRadius(SizeConstant.RADIUS_M)
           .margin({ right: SizeConstant.SPACE_M })
+          .clip(true)
         Column() {
           Text(this.playListBean.name)
             .fontSize(SizeConstant.TEXT_L)

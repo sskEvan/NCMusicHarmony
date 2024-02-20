@@ -2,7 +2,9 @@ import {
   ClickEffectLayout,
   CommonAppBar,
   CpnProgressBar,
+  LogUtil,
   SizeConstant,
+  StringUtil,
   TabLayoutPagerMediator,
   TabPager
 } from 'lib_common'
@@ -11,7 +13,6 @@ import {
   CpnLyric,
   PlayStore,
   STORAGE_PLAY_STORE,
-  EventIds,
   PlayModeType,
   MusicPlayController,
   PlayerStatus,
@@ -22,7 +23,7 @@ import {
 @Component
 export struct MusicPlayPage {
   @StorageLink(STORAGE_PLAY_STORE) @Watch("playerStoreChange") playerStore: Partial<PlayStore> = {}
-  @State progress: number = 50
+  @State progress: number = 0
   @State @Watch("tabMediatorChange") tabMediator: TabLayoutPagerMediator = new TabLayoutPagerMediator({})
   @State neededAngle: number = 0
   @State showCpnLyric: boolean = false
@@ -33,6 +34,7 @@ export struct MusicPlayPage {
     autoCancel: true
   })
   lastPlayMode: PlayModeType
+  isProgressBarDragging: boolean = false
 
   aboutToAppear() {
     this.tabMediator = new TabLayoutPagerMediator({
@@ -71,6 +73,14 @@ export struct MusicPlayPage {
       })
     }
     this.lastPlayMode = this.playerStore.playMode
+
+    if (this.playerStore.currentDuring != 0 && this.playerStore.totalDuring != 0) {
+      if (!this.isProgressBarDragging) {
+        this.progress = this.playerStore.currentDuring * 100 / this.playerStore.totalDuring
+      }
+    } else {
+      this.progress = 0
+    }
   }
 
   build() {
@@ -166,7 +176,7 @@ export struct MusicPlayPage {
         keyGenerator: (index: number) => {
           return (this.tabMediator.tabItems[index] as SongBean).id.toString() + this.playerStore.playMode.toString()
         }
-        })
+      })
         .width("100%")
         .height(272)
         .margin({ top: 84 })
@@ -239,9 +249,24 @@ export struct MusicPlayPage {
 
   @Builder PlayProgressBarBuilder() {
     Row() {
-      Text("00:00").fontSize(SizeConstant.TEXT_M).width(44).fontColor(Color.White)
-      CpnProgressBar({ progress: $progress }).layoutWeight(1).height(32)
-      Text("999:99").fontSize(SizeConstant.TEXT_M).width(44).fontColor(Color.White).textAlign(TextAlign.End)
+      Text(StringUtil.msToTime(this.playerStore.currentDuring))
+        .fontSize(SizeConstant.TEXT_M)
+        .width(44)
+        .fontColor(Color.White)
+      CpnProgressBar({ progress: $progress,
+        dragCallback: (isFinish) => {
+          if (isFinish) {
+            MusicPlayController.seekTo(this.progress)
+            this.isProgressBarDragging = false
+          } else {
+            this.isProgressBarDragging = true
+          }
+        } }).layoutWeight(1).height(32)
+      Text(StringUtil.msToTime(this.playerStore.totalDuring))
+        .fontSize(SizeConstant.TEXT_M)
+        .width(44)
+        .fontColor(Color.White)
+        .textAlign(TextAlign.End)
     }
     .width("100%")
     .height(32)

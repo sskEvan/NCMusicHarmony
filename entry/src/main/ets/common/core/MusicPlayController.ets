@@ -1,10 +1,35 @@
-import { PlayerStatus, SongBean, STORAGE_PLAY_STORE } from '../..'
+import { EventIds, NCPlayer, PlayerStatus, SongBean, STORAGE_PLAY_STORE } from '../..'
 import { LogUtil } from 'lib_common'
+import emitter from '@ohos.events.emitter'
 
 export class MusicPlayController {
   static originPlayList?: SongBean[]
   static playList?: SongBean[]
   static playListId: number = 0
+
+  static async init() {
+    await NCPlayer.initPlayer()
+    // 监听播放状态
+    emitter.on({ eventId: EventIds.PLAYER_STATUS }, (data) => {
+      LogUtil.debug("--MusicPlayController--监听播放器状态:" + data.data.status)
+      const playerStore = this.getPlayStore()
+      playerStore.playerStats = data.data.status as PlayerStatus
+      this.updatePlayStore(playerStore)
+    })
+    // 监听播放总长度
+    emitter.on({ eventId: EventIds.PLAYER_DURING }, (data) => {
+      const playerStore = this.getPlayStore()
+      playerStore.totalDuring = data.data.during
+      this.updatePlayStore(playerStore)
+    })
+    // 监听当前播放长度
+    emitter.on({ eventId: EventIds.PLAYER_TIME_UPDATE }, (data) => {
+      LogUtil.debug("--MusicPlayController--监听当前播放长度:" + data.data.timeUpdate)
+      const playerStore = this.getPlayStore()
+      playerStore.currentDuring = data.data.timeUpdate
+      this.updatePlayStore(playerStore)
+    })
+  }
 
   static setDataSource(playListId: number, playList: SongBean[]) {
     if (playListId != MusicPlayController.playListId) {
@@ -15,29 +40,35 @@ export class MusicPlayController {
   }
 
   static play(index: number) {
+    NCPlayer.stop()
     const playerStore = this.getPlayStore()
     playerStore.index = index
-    playerStore.playerStats = PlayerStatus.STARTED
+    playerStore.currentDuring = 0
+    playerStore.totalDuring = 0
     this.updatePlayStore(playerStore)
-    LogUtil.debug("-------------play-----------index=" + index + "," + MusicPlayController.playList[playerStore.index].name)
+    NCPlayer.setDataSource(this.playList[index])
   }
 
   static start() {
-    const playerStore = this.getPlayStore()
-    playerStore.playerStats = PlayerStatus.STARTED
-    this.updatePlayStore(playerStore)
+    NCPlayer.start()
   }
 
   static pause() {
+    NCPlayer.pause()
+  }
+
+  static seekTo(progress: number) {
     const playerStore = this.getPlayStore()
-    playerStore.playerStats = PlayerStatus.PAUSED
+    playerStore.currentDuring = playerStore.totalDuring * progress / 100
     this.updatePlayStore(playerStore)
+    LogUtil.debug("------------------MusicPlayController--------------seekTo:" + playerStore.currentDuring)
+    if (playerStore.currentDuring != 0 && playerStore.totalDuring != 0) {
+      NCPlayer.seekTo(playerStore.totalDuring * progress / 100)
+    }
   }
 
   static stop() {
-    const playerStore = this.getPlayStore()
-    playerStore.playerStats = PlayerStatus.STOPPED
-    this.updatePlayStore(playerStore)
+    NCPlayer.stop()
   }
 
   static setPlayMode(playMode: PlayModeType) {
@@ -50,19 +81,16 @@ export class MusicPlayController {
       const currentPlayIndex = MusicPlayController.playList.findIndex((item: SongBean) => {
         return item.id == MusicPlayController.originPlayList[playerStore.index].id
       })
-      LogUtil.debug("-------------RANDOM-----------currentPlayIndex=" + currentPlayIndex + ",playerStore.index" + playerStore.index + "," + MusicPlayController.originPlayList[playerStore.index].name)
       if (currentPlayIndex != playerStore.index && currentPlayIndex != -1) {
         const temp = MusicPlayController.playList[playerStore.index]
         MusicPlayController.playList[playerStore.index] = MusicPlayController.originPlayList[playerStore.index]
         MusicPlayController.playList[currentPlayIndex] = temp
         LogUtil.debug("替换歌曲," + currentPlayIndex + "=>" + playerStore.index)
       }
-      LogUtil.debug("-------------before random-----------")
       for (let index = 0; index < MusicPlayController.originPlayList.length; index++) {
         const element = MusicPlayController.originPlayList[index];
         LogUtil.debug(element.name)
       }
-      LogUtil.debug("-------------after random-----------")
       for (let index = 0; index < MusicPlayController.playList.length; index++) {
         const element = MusicPlayController.playList[index];
         LogUtil.debug(element.name)
@@ -71,7 +99,6 @@ export class MusicPlayController {
       const currentPlayIndex = MusicPlayController.originPlayList.findIndex((item: SongBean) => {
         return item.id == MusicPlayController.playList[playerStore.index].id
       })
-      LogUtil.debug("-------------LOOP-----------currentPlayIndex=" + currentPlayIndex + ",playerStore.index" + playerStore.index)
       if (currentPlayIndex != playerStore.index && currentPlayIndex != -1) {
         LogUtil.debug("替换歌曲索引," + playerStore.index + "=>" + +currentPlayIndex)
         playerStore.index = currentPlayIndex
@@ -88,33 +115,31 @@ export class MusicPlayController {
 
   static playNext() {
     const playerStore = this.getPlayStore()
+    let targetIndex = 0
     if (playerStore.index == this.playList.length - 1) {
-      playerStore.index = 0
+      targetIndex = 0
     } else {
-      playerStore.index += 1
+      targetIndex = playerStore.index + 1
     }
-    LogUtil.debug("-------------play-----------index=" + playerStore.index + "," + MusicPlayController.playList[playerStore.index].name)
-    playerStore.playerStats = PlayerStatus.STARTED
-    this.updatePlayStore(playerStore)
+    this.play(targetIndex)
   }
 
   static playPre() {
     const playerStore = this.getPlayStore()
+    let targetIndex = 0
     if (playerStore.index == 0) {
-      playerStore.index = this.playList.length - 1
+      targetIndex = this.playList.length - 1
     } else {
-      playerStore.index -= 1
+      targetIndex = playerStore.index - 1
     }
-    LogUtil.debug("-------------play-----------index=" + playerStore.index + "," + MusicPlayController.playList[playerStore.index].name)
-    playerStore.playerStats = PlayerStatus.STARTED
-    this.updatePlayStore(playerStore)
+    this.play(targetIndex)
   }
 
   private  static getPlayStore(): PlayStore {
     return AppStorage.Get<PlayStore>(STORAGE_PLAY_STORE)
   }
 
-  private  static async updatePlayStore(playerStore: PlayStore) {
+  private static updatePlayStore(playerStore: PlayStore) {
     AppStorage.Set(STORAGE_PLAY_STORE, new PlayStore(playerStore))
   }
 }

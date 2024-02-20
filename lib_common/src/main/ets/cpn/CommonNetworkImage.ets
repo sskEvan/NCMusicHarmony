@@ -13,6 +13,12 @@ export struct CommonNetworkImage {
           .height("100%")
           .constraintSize({ maxWidth: 72, maxHeight: 72 })
       }
+      // Image(this.placeHolder)
+      //   .width("100%")
+      //   .height("100%")
+      //   .constraintSize({ maxWidth: 72, maxHeight: 72 })
+      //   .visibility(this.status != NetworkImageLoadStatus.SUCCESS ? Visibility.Visible : Visibility.Hidden)
+
       Image(this.url)
         .width("100%")
         .height("100%")
@@ -25,19 +31,22 @@ export struct CommonNetworkImage {
         }) => {
           if (event.loadingStatus == 1) {
             this.status = NetworkImageLoadStatus.SUCCESS
-            animateTo({
-              duration: 200
-            }, () => {
-              this.imageOpacity = 1
-            })
+            // animateTo({
+            //   duration: 200
+            // }, () => {
+            //   this.imageOpacity = 1
+            // })
           }
         })
         .onError(() => {
           this.status = NetworkImageLoadStatus.ERROR
         })
         .visibility(this.status == NetworkImageLoadStatus.SUCCESS ? Visibility.Visible : Visibility.Hidden)
-        .opacity(this.imageOpacity)
+        // .opacity(this.imageOpacity)
     }
+    // Image(this.url)
+    //   .width("100%")
+    //   .height("100%")
   }
 }
 

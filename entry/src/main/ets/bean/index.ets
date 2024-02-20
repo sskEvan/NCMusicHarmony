@@ -4,3 +4,4 @@ export * from './UserPlaylistResultBean'
 export * from './SongSheetDetailResultBean'
 export * from './DynamicResultBean'
 export * from "./CommentResultBean"
+export * from './SongUrlResultBean'

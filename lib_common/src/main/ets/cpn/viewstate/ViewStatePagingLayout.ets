@@ -15,6 +15,7 @@ export struct ViewStatePagingLayout {
   onLoadMore: (viewState: ViewState) => void = null
   layoutType: PagingLayoutType = PagingLayoutType.LIST
   columnsTemplate: string = "1fr 1fr"
+  keyGenerator?: (item: object, index: number) => string
 
   onRetry() {
     this.onLoadData(this.viewState)
@@ -101,6 +102,7 @@ export struct ViewStatePagingLayout {
       .edgeEffect(EdgeEffect.None)
       .height("100%")
       .width("100%")
+      .cachedCount(2)
       .onScrollFrameBegin((offset: number) => {
         return { offsetRemain: this.mediator.collapsibleMediator?.getScrollerFrameRemainOffset(offset) || 0 }
       })
@@ -116,8 +118,15 @@ export struct ViewStatePagingLayout {
             this.ItemBuilder(item, index)
           }
         },
-        (item: object) => {
-          return JSON.stringify(item)
+        // (item: object) => {
+        //   return JSON.stringify(item)
+        // }
+        (item, index) => {
+          if (this.keyGenerator) {
+            return this.keyGenerator(item, index)
+          } else {
+            return JSON.stringify(item)
+          }
         }
       )
     }

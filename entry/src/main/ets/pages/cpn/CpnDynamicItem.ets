@@ -93,8 +93,8 @@ export struct CpnDynamicItem {
           })) })
       } }) {
         CommonNetworkImage({ url: pics[0].originUrl })
-          .width(this.getImageSize(1, pics[0]).width)
-          .height(this.getImageSize(1, pics[0]).height)
+          .width(this.getImageSize(pics[0]).width)
+          .height(this.getImageSize(pics[0]).height)
           .borderRadius(SizeConstant.RADIUS_L)
           .margin({ top: SizeConstant.SPACE_M })
           .clip(true)
@@ -114,9 +114,10 @@ export struct CpnDynamicItem {
               })) })
           } }) {
             CommonNetworkImage({ url: pic.originUrl })
-              .width(this.getImageSize(pics.length, pic).width)
-              .height(this.getImageSize(pics.length, pic).height)
-              .margin({ bottom: this.getImageMarginBottom(pics.length, index) })
+              .width(this.getImagePercentage(pics.length))
+              .aspectRatio(1)
+              .padding("1lpx")
+                // .margin({ bottom: this.getImageMarginBottom(pics.length, index) })
               .sharedTransition(`picPreview:${pics[index].originUrl}`, {
                 duration: 300,
                 curve: Curve.Linear
@@ -131,31 +132,25 @@ export struct CpnDynamicItem {
 
   }
 
-  getImageSize(count: number, pic: DynamicPics): SizeOptions {
-    if (count == 1) {
-      const maxSize = 200
-      let width = maxSize
-      let height = maxSize
-      if (pic.width && pic.width != 0 && pic.height && pic.height != 0) {
-        if (pic.width > pic.height) {
-          height *= (pic.height * 1.0 / pic.width)
-        } else {
-          width *= (pic.width * 1.0 / pic.height)
-        }
+  getImageSize(pic: DynamicPics): SizeOptions {
+    const maxSize = 200
+    let width = maxSize
+    let height = maxSize
+    if (pic.width && pic.width != 0 && pic.height && pic.height != 0) {
+      if (pic.width > pic.height) {
+        height *= (pic.height * 1.0 / pic.width)
+      } else {
+        width *= (pic.width * 1.0 / pic.height)
       }
-      return { width: width, height: height }
-    } else if (count <= 4) {
-      return { width: 143, height: 143 }
-    } else {
-      return { width: 94.67, height: 94.67 }
     }
+    return { width: width, height: height }
   }
 
-  getImageMarginBottom(count: number, index: number): number {
+  getImagePercentage(count: number): string {
     if (count <= 4) {
-      return (index + 1) / 2.0 <= 1 ? 2 : 0
+      return "50%"
     } else {
-      return (index + 1) / 3.0 <= Math.floor(((count + 2) / 3.0 - 1)) ? 2 : 0
+      return "33.33%"
     }
   }
 

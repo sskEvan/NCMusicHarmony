@@ -13,13 +13,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "/Users/anmin83/.ohos/config/auto_debug_NCMusicHarmony_com.ssk.numusic_240086000130995105.cer",
-          "storePassword": "0000001BFCE3454E712AD5A512BA6EF5D4C391A1BC7A6D8A8E76B0E935B5B6E682C0472CABCF03728F2379",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001BEC7A1A75D2C4ED5C791F39709034CA4FF78A5189EE47658C2D0B34B5B6218B2C78C1183FFE45A8",
-          "profile": "/Users/anmin83/.ohos/config/auto_debug_NCMusicHarmony_com.ssk.numusic_240086000130995105.p7b",
+          "storePassword": "0000001BF6C14DB9E3C0BB32CBC57A4545CFDE665BD558E5AC24A8FAE11AC9E923F265DCF5B5E71147EA38",
+          "certpath": "/Users/anmin83/Desktop/harmony_keystore/NCMusic.cer",
+          "keyAlias": "NCMusic",
+          "keyPassword": "0000001BFDCBA021432E4DBB0D4C026F14B14353F6C7B0BF45317C06A64E9FBE402A203FA43E3FDB98CF63",
+          "profile": "/Users/anmin83/Desktop/harmony_keystore/NCMusicDebug.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "/Users/anmin83/.ohos/config/auto_debug_NCMusicHarmony_com.ssk.numusic_240086000130995105.p12"
+          "storeFile": "/Users/anmin83/Desktop/harmony_keystore/NCMusicKeyStore.p12"
         }
       }
     ]

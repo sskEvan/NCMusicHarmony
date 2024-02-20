@@ -17,6 +17,9 @@ export struct AttentionDynamicPage {
       ItemBuilder: (item: object,  _) => {
         this.ItemBuilder(item as DynamicBean)
       },
+      keyGenerator: (item: object, _) => {
+        return (item as DynamicBean).threadId
+      },
       onLoadData: async (viewState: ViewState) => {
         attentionDynamicViewModel.getDynamicList(viewState, this.pagingLayoutMediator)
       },

@@ -13,6 +13,7 @@ export struct CpnProgressBar {
   @Link progress: number
   @State isActive: boolean = false
   @State progressWidth: number = 0
+  dragCallback: (isFinish: boolean) => void = null
 
   build() {
     Stack({ alignContent: Alignment.Start }) {
@@ -41,12 +42,19 @@ export struct CpnProgressBar {
       this.progressWidth = newValue.width as number
     })
     .onTouch((event: TouchEvent) => {
-      if (event.type == TouchType.Down) {
+      if (event.type == TouchType.Down || event.type == TouchType.Move) {
         this.isActive = true
+        this.progress = Math.max(0, Math.min(100, event.touches[0].x / this.progressWidth * 100))
+        if (this.dragCallback) {
+          this.dragCallback(false)
+        }
       } else if (event.type == TouchType.Up || event.type == TouchType.Cancel) {
         this.isActive = false
+        this.progress = Math.max(0, Math.min(100, event.touches[0].x / this.progressWidth * 100))
+        if (this.dragCallback) {
+          this.dragCallback(true)
+        }
       }
-      this.progress = Math.max(0, Math.min(100, event.touches[0].x / this.progressWidth * 100))
     })
   }
 }

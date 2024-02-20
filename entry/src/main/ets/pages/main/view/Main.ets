@@ -1,7 +1,7 @@
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import { SizeConstant } from 'lib_common'
 import { DiscoveryPage, CpnMusicPlayBar, DynamicPage, MyPage } from '../'
-import { PlayerStatus, PlayStore, STORAGE_PLAY_STORE } from '../../..'
+import { MusicPlayController, PlayerStatus, PlayStore, STORAGE_PLAY_STORE } from '../../..'
 
 
 @Entry
@@ -14,6 +14,10 @@ struct MainPage {
     new TabItem(1, "播客", $r('app.media.ic_nav_podcast')),
     new TabItem(2, "我的", $r('app.media.ic_nav_my')),
     new TabItem(3, "动态", $r('app.media.ic_nav_dynamic')),]
+
+  aboutToAppear() {
+    MusicPlayController.init()
+  }
 
   build() {
     Stack({ alignContent: Alignment.BottomStart }) {
