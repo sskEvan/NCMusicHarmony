@@ -40,7 +40,7 @@ export struct CpnLyric {
                   .width("100%")
                   .margin(SizeConstant.SPACE_S)
               }
-            }
+            }.padding({ left: SizeConstant.SPACE_L, right: SizeConstant.SPACE_L })
           }
         }, (item: object, _) => {
           return JSON.stringify(item)

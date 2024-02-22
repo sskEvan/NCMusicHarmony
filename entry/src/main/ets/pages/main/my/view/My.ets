@@ -18,7 +18,7 @@ import { CreateMusicPage } from '../music/view/CreateMusic'
 import { AllPodcastPage } from '../podcast/view/AllPodcast'
 import { MyPodcastPage } from '../podcast/view/MyPodcast'
 import { VoiceBookPage } from '../podcast/view/VoiceBook'
-import { STORAGE_USER_INFO } from '../../../../common'
+import { STORAGE_MAIN_DRAWER_TOGGLE, STORAGE_USER_INFO } from '../../../../common'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 
 /**
@@ -29,6 +29,8 @@ import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 export struct MyPage {
   @StorageLink(THEME_TYPE) @Watch("themeChange") themeType: ThemeType = ThemeType.DEFAULT
   @StorageLink(STORAGE_USER_INFO) userInfo: UserInfoBean = new UserInfoBean({} as IUserInfoBean)
+  @StorageLink(STORAGE_MAIN_DRAWER_TOGGLE) mainDrawerToggle: boolean = false
+
   private myTabItems: TabItem[] = [new TabItem(0, "音乐"), new TabItem(1, "播客"), new TabItem(2, "动态")]
   private musicTabItems: TabItem[] = [new TabItem(0, "创建"), new TabItem(1, "收藏"), new TabItem(2, "专辑")]
   private podcastTabItems: TabItem[] = [new TabItem(0, "全部"), new TabItem(1, "播客"), new TabItem(2, "有声书")]
@@ -79,14 +81,13 @@ export struct MyPage {
     return this.themeType == ThemeType.DARK ? this.collapsibleProgress : (1 - this.collapsibleProgress)
   }
 
-  get
-
   @Builder AppBarBuilder() {
     Column() {
       Stack().width("100%").height(ScreenUtils.getStatusBarHeight())
         .backgroundColor(`rgba(${this.appBarColorBackgroundRgb}, ${this.appBarColorBackgroundRgb}, ${this.appBarColorBackgroundRgb}, ${this.collapsibleProgress})`)
 
       RelativeContainer() {
+
         Image($r('app.media.ic_menu'))
           .margin({ left: SizeConstant.SPACE_M })
           .width(SizeConstant.ICON_L + SizeConstant.SPACE_S * 2)
@@ -98,6 +99,9 @@ export struct MyPage {
             center: { anchor: '__container__', align: VerticalAlign.Center }
           })
           .id("ivMenu")
+          .onClick(() => {
+            this.mainDrawerToggle = !this.mainDrawerToggle
+          })
 
         Row() {
           CommonNetworkImage({

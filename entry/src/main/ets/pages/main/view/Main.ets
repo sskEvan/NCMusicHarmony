@@ -1,8 +1,9 @@
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import { SizeConstant } from 'lib_common'
 import { DiscoveryPage, CpnMusicPlayBar, DynamicPage, MyPage, PodcastPage } from '../'
-import { EventIds, MusicPlayController, PlayerStatus } from '../../..'
+import { EventIds, MusicPlayController, PlayerStatus, STORAGE_MAIN_DRAWER_TOGGLE } from '../../..'
 import emitter from '@ohos.events.emitter'
+import { MainDrawer } from './cpn/MainDrawer'
 
 /**
  * 首页
@@ -11,6 +12,7 @@ import emitter from '@ohos.events.emitter'
 @Component
 struct MainPage {
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT
+  @StorageLink(STORAGE_MAIN_DRAWER_TOGGLE) mainDrawerToggle: boolean = false
   @State selectedIndex: number = 2
   private tabItems: TabItem[] = [new TabItem(0, "发现", $r('app.media.ic_nav_discovery')),
     new TabItem(1, "播客", $r('app.media.ic_nav_podcast')),
@@ -65,6 +67,8 @@ struct MainPage {
       if ((this.playerStatus ?? PlayerStatus.NONE) !== PlayerStatus.NONE) {
         CpnMusicPlayBar().margin({ bottom: SizeConstant.NAV_BAR_HEIGHT })
       }
+
+      MainDrawer()
     }
   }
 
