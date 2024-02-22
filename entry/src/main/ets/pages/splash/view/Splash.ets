@@ -1,9 +1,8 @@
 import {RouterUrls } from 'lib_common'
 import { AppTheme, THEME_TYPE, ThemeType } from 'lib_theme'
 import router from '@ohos.router'
-import { IUserInfoBean, UserInfoBean } from '../../../bean/LoginResultBean'
-import { UserManager } from '../../../common/core/UserManager'
-import { STORAGE_USER_INFO } from '../../../common'
+import { IUserInfoBean, UserInfoBean, UserManager, STORAGE_USER_INFO } from '../../..'
+
 
 /**
  * 欢迎页面

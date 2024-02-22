@@ -1,6 +1,9 @@
 
 import { IThemePalette } from '.'
 
+/**
+ * 默认主题取色盘
+ */
 export class DefaultThemePalette implements IThemePalette {
   primary: ResourceColor = "#FFF0484E"
   secondary: ResourceColor = "#FFF0888C"

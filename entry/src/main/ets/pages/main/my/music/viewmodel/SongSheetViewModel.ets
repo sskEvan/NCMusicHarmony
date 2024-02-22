@@ -1,6 +1,5 @@
 import { BaseViewModel, PagingLayoutMediator, RequestOptions, ViewState } from 'lib_common';
-import { UserPlaylistBean, UserPlaylistResultBean } from '../../../../../bean/UserPlaylistResultBean';
-import { ApiConstant } from '../../../../../common';
+import { UserPlaylistBean, UserPlaylistResultBean, ApiConstant } from '../../../../..';
 
 /**
  * 首页-我的-音乐-歌单ViewModel

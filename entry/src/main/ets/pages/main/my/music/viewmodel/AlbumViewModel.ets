@@ -1,6 +1,5 @@
 import { BaseViewModel, PagingLayoutMediator, RequestOptions, ViewState } from 'lib_common'
-import { AlbumResultBean } from '../../../../../bean/AlbumResultBean'
-import { ApiConstant } from '../../../../../common'
+import { AlbumResultBean, ApiConstant } from '../../../../..'
 
 /**
  * 首页-我的-音乐-专辑ViewModel

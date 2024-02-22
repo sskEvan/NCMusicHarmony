@@ -1,7 +1,6 @@
 import { BaseViewModel, RequestOptions, ViewState } from 'lib_common';
 import { ApiConstant } from '../../..';
-import { LyricModel, LyricResultBean } from '../../../bean/LyricResultBean';
-import { LyricUtil } from '../../../common/util/LyricUtil';
+import { LyricModel, LyricResultBean, LyricUtil } from '../../..';
 
 export class LyricViewModel extends BaseViewModel {
   async fetchData(id: number, viewState: ViewState) : Promise<LyricModel[]> {

@@ -14,9 +14,16 @@ import {
 } from 'lib_common'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import router from '@ohos.router'
-import { SongBean, UserPlaylistBean, UserPlayListDetailResultBean } from '../../../bean'
-import songSheetDetailViewModel from '../viewmodel/SongSheetDetailViewModel'
-import { CpnMusicPlayBar, EventIds, MusicPlayController, PlayerStatus } from '../../..'
+import {
+  CpnMusicPlayBar,
+  EventIds,
+  MusicPlayController,
+  PlayerStatus,
+  SongBean,
+  UserPlaylistBean,
+  UserPlayListDetailResultBean,
+  songSheetDetailViewModel
+} from '../../..'
 import emitter from '@ohos.events.emitter'
 
 /**
@@ -29,7 +36,7 @@ struct SongSheetDetailPage {
   @State private collapsibleMediator: CollapsibleMediator = new CollapsibleMediator((progress: number) => {
     this.collapsibleProgress = progress
   })
-  @Provide  playListBean: Partial<UserPlaylistBean> = {}
+  @Provide playListBean: Partial<UserPlaylistBean> = {}
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT
   // 播放状态
   @State playerStatus: PlayerStatus | undefined = undefined

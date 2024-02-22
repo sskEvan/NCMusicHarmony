@@ -1,6 +1,5 @@
 import { BaseViewModel, PagingLayoutMediator, RequestOptions, ViewState } from 'lib_common';
-import { DynamicBean, UserDynamicResultBean } from '../../../../../bean/DynamicResultBean';
-import { ApiConstant } from '../../../../..';
+import { DynamicBean, UserDynamicResultBean, ApiConstant } from '../../../../..';
 
 /**
  * 首页-我的-动态ViewModel

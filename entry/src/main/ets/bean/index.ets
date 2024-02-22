@@ -5,4 +5,4 @@ export * from './SongSheetDetailResultBean'
 export * from './DynamicResultBean'
 export * from "./CommentResultBean"
 export * from './SongUrlResultBean'
-export * from './SongUrlResultBean'
+export * from './LyricResultBean'

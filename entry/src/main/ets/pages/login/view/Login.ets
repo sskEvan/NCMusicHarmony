@@ -1,8 +1,6 @@
-import { SizeConstant } from 'lib_common'
-import ViewStateLayout from 'lib_common/src/main/ets/cpn/viewstate/ViewStateLayout'
+import { SizeConstant, ViewStateLayout } from 'lib_common'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
-import { QrcodeValueBean } from '../../../bean'
-import loginViewModel, { LoginAuthStep } from '../viewmodel/LoginViewModel'
+import { QrcodeValueBean, LoginAuthStep, loginViewModel } from '../../..'
 
 /**
  * 登陆页面
@@ -12,7 +10,11 @@ import loginViewModel, { LoginAuthStep } from '../viewmodel/LoginViewModel'
 struct LoginPage {
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT
   @State qrcodeValueBean: Partial<QrcodeValueBean> = {}
-  @State authStep: LoginAuthStep = LoginAuthStep.GENERATE_QRCODE_ING
+  @State authStep: LoginAuthStep | undefined = undefined
+
+  aboutToAppear() {
+    this.authStep = LoginAuthStep.GENERATE_QRCODE_ING
+  }
 
   build() {
     Stack({ alignContent: Alignment.Top }) {

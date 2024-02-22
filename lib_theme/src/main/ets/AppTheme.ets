@@ -1,10 +1,15 @@
 import { DarkThemePalette, DefaultThemePalette, IThemePalette, ThemeType } from '.'
 
+// 默认主题
 const defaultThemePalette = new DefaultThemePalette()
+// 黑色主题
 const darkThemePalette = new DarkThemePalette()
 
 
 export class AppTheme {
+  /**
+   * 获取主题取色盘
+   */
   static palette(themeType: ThemeType): IThemePalette {
     if (themeType == ThemeType.DEFAULT) {
       return defaultThemePalette

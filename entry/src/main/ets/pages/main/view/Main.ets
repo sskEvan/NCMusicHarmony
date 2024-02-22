@@ -11,7 +11,7 @@ import emitter from '@ohos.events.emitter'
 @Component
 struct MainPage {
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT
-  @State selectedIndex: number = 0
+  @State selectedIndex: number = 2
   private tabItems: TabItem[] = [new TabItem(0, "发现", $r('app.media.ic_nav_discovery')),
     new TabItem(1, "播客", $r('app.media.ic_nav_podcast')),
     new TabItem(2, "我的", $r('app.media.ic_nav_my')),

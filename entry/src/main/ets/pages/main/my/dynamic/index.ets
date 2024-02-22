@@ -1,3 +1,3 @@
-export * from './view'
+export * from './view/MyDynamic'
 
-export * from './viewmodel'
+export * from './viewmodel/UserDynamicViewModel'

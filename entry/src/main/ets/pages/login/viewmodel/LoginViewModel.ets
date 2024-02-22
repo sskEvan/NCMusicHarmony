@@ -1,14 +1,16 @@
 import { BaseViewModel, LogUtil, RequestOptions, RouterUrls, ViewState } from 'lib_common';
 import router from '@ohos.router';
-import { ApiConstant, UserManager } from '../../../common';
 import {
+  ApiConstant,
+  UserManager,
   AccountInfoResultBean,
   UserDetailResultBean,
   QrcodeAuthResultBean,
   QrcodeKeyResultBean,
   QrcodeValueResultBean,
   UserInfoBean
-} from '../../../bean/LoginResultBean';
+} from '../../..';
+
 
 /**
  * 登陆ViewModel
@@ -119,7 +121,5 @@ export enum LoginAuthStep {
   SYNC_USER_INFO
 }
 
-const loginViewModel = new LoginViewModel();
-
-export default loginViewModel as LoginViewModel;
+export const loginViewModel = new LoginViewModel();
 

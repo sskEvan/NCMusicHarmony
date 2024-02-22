@@ -6,7 +6,7 @@ import { ViewStateLoading } from './ViewStateLoading'
  * 页面状态切换组件
  */
 @Component
-export default struct ViewStateLayout {
+export struct ViewStateLayout {
   @State viewState: ViewState = new ViewState(ViewStateType.LOADING)
   // 数据加载回调
   onLoadData: (viewState: ViewState) => void = () => {}

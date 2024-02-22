@@ -1,9 +1,6 @@
-import { ListDataSource, SizeConstant } from 'lib_common'
-import ViewStateLayout, { ViewState } from 'lib_common/src/main/ets/cpn/viewstate/ViewStateLayout'
+import { ListDataSource, SizeConstant, ViewStateLayout, ViewState } from 'lib_common'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
-import { MusicPlayController } from '../../..'
-import { LyricModel } from '../../../bean/LyricResultBean'
-import { lyricViewModel } from '../viewmodel'
+import { MusicPlayController, LyricModel, lyricViewModel } from '../../..'
 
 /**
  * 歌词组件

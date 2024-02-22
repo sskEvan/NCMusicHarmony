@@ -1,7 +1,6 @@
 import { BaseViewModel, PagingLayoutMediator, RequestOptions, ViewState } from 'lib_common';
-import { SongSheetDetailResultBean } from '../../../bean/SongSheetDetailResultBean';
-import { UserPlayListDetailResultBean } from '../../../bean/UserPlaylistResultBean';
-import { ApiConstant } from '../../../common';
+import { SongSheetDetailResultBean, ApiConstant, UserPlayListDetailResultBean } from '../../..';
+
 
 /**
  * 歌单详情ViewModel
@@ -43,6 +42,4 @@ export class SongSheetDetailViewModel extends BaseViewModel {
   }
 }
 
-const songSheetDetailViewModel = new SongSheetDetailViewModel();
-
-export default songSheetDetailViewModel as SongSheetDetailViewModel;
+export const songSheetDetailViewModel = new SongSheetDetailViewModel();

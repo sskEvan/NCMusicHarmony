@@ -1,4 +1,8 @@
 import { IThemePalette } from '.'
+
+/**
+ * 黑色主题取色盘
+ */
 export class DarkThemePalette implements IThemePalette {
   primary: ResourceColor = "#FFF0484E"
   secondary: ResourceColor = "#FFF0888C"

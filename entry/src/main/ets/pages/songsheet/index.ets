@@ -1,4 +1,4 @@
-export * from './view'
+export * from './view/SongSheetDetail'
 
-export * from './viewmodel'
+export * from './viewmodel/SongSheetDetailViewModel'
 
