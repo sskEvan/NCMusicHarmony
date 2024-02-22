@@ -3,6 +3,9 @@ import { ClickEffectLayout, RouterUrls, SizeConstant } from 'lib_common'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import { AlbumBean } from '../../../..'
 
+/**
+ * 专辑item组件
+ */
 @Component
 export struct CpnAlbumItem {
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT

@@ -4,12 +4,13 @@ import { BaseViewModel, LogUtil, Request, RequestBean } from 'lib_common'
 import promptAction from '@ohos.promptAction'
 import emitter from '@ohos.events.emitter'
 
-
+/**
+ * 音乐播放器，通过AVPlayer实现音乐播放功能
+ */
 export class NCPlayer extends BaseViewModel {
   static player: media.AVPlayer | null = null
   private static lastStatus: PlayerStatus | null = null
   private static isSeeking = false
-  private static lastTimeUpdate = 0
 
   static async initPlayer() {
     if (this.player === null) {
@@ -52,7 +53,7 @@ export class NCPlayer extends BaseViewModel {
       })
       // 监听播放进度
       this.player.on('timeUpdate', (time) => {
-        LogUtil.debug("--NCPlayer--timeUpdate: isSeeking=" + this.isSeeking + ",lastStatus=" + this.lastStatus)
+        // LogUtil.debug("--NCPlayer--timeUpdate: isSeeking=" + this.isSeeking + ",lastStatus=" + this.lastStatus)
         if (!this.isSeeking) {
           this.notifyTimeUpdate(time)
         }
@@ -70,16 +71,24 @@ export class NCPlayer extends BaseViewModel {
     }
   }
 
+  /**
+   * 设置播放资源
+   * @param songBean
+   */
   static async setDataSource(songBean: SongBean) {
     await this.player.reset()
     this.isSeeking = false
     LogUtil.debug("--NCPlayer--setDataSource:" + songBean.name)
+    // 获取歌曲URL
     const songUrlResult = await Request.get<SongUrlResultBean>(
       new RequestBean({
         url: ApiConstant.URL_SONG_URL,
         data: { "id": songBean.id, "br": 128000 },
       }))
     if (songUrlResult && songUrlResult.data && songUrlResult.data.length > 0) {
+      if (this.lastStatus != PlayerStatus.IDLE) {
+        await this.player.reset()
+      }
       this.player.url = songUrlResult.data[0].url
       LogUtil.debug("--NCPlayer--setDataSource url:" + this.player.url)
     } else {
@@ -87,62 +96,103 @@ export class NCPlayer extends BaseViewModel {
     }
   }
 
-
-  static start() {
-    if (this.lastStatus == PlayerStatus.STARTED
-    || this.lastStatus == PlayerStatus.PREPARED
+  /**
+   * 播放
+   */
+  static async start() {
+    if (this.lastStatus == PlayerStatus.PREPARED
     || this.lastStatus == PlayerStatus.PAUSED
     || this.lastStatus == PlayerStatus.COMPLETED
     ) {
       LogUtil.debug("--NCPlayer--play")
-      this.player.play()
+      await this.player.play()
     }
   }
 
-  static pause() {
+  /**
+   * 暂停
+   */
+  static async pause() {
     if (this.lastStatus == PlayerStatus.STARTED) {
       LogUtil.debug("--NCPlayer--pause")
       this.player.pause()
     }
   }
 
-  static stop() {
+  /**
+   * 停止
+   */
+  static async stop() {
     LogUtil.debug("--NCPlayer--stop")
     this.player.stop()
   }
 
+  /**
+   * 拖动进度
+   */
   static seekTo(ms: number) {
     LogUtil.debug("--NCPlayer--seekTo")
     this.isSeeking = true
     this.player.seek(ms)
   }
 
+  /**
+   * 通知播放状态
+   * @param status
+   */
   private static notifyPlayerStatus(status: PlayerStatus) {
     if (this.lastStatus != status) {
       this.lastStatus = status
-      emitter.emit({ eventId: EventIds.PLAYER_STATUS }, { data: { status } })
+      emitter.emit({ eventId: EventIds.PLAYER_STATUS}, { data: { status } })
     }
   }
 
+  /**
+   * 通知播放总时长
+   */
   private static notifyDuring(during) {
     emitter.emit({ eventId: EventIds.PLAYER_DURING }, { data: { during } })
   }
 
+  /**
+   * 通知当前播放时间
+   */
   private static notifyTimeUpdate(timeUpdate) {
-    if (Math.abs(this.lastTimeUpdate - timeUpdate) >= 800) {
-      emitter.emit({ eventId: EventIds.PLAYER_TIME_UPDATE }, { data: { timeUpdate } })
-      this.lastTimeUpdate = timeUpdate
-    }
+    emitter.emit({ eventId: EventIds.PLAYER_TIME_UPDATE }, { data: { timeUpdate } })
   }
 }
 
+/**
+ * 播放状态
+ */
 export enum PlayerStatus {
+  // 无
+  NONE,
+  // 空闲
   IDLE,
+  // 准备完成
   PREPARED,
+  // 播放中
   STARTED,
+  // 暂停
   PAUSED,
+  // 停止
   STOPPED,
+  // 完成
   COMPLETED,
+  // 播放出错
   ERROR
+}
+
+/**
+ * 播放模式
+ */
+export enum PlayerMode {
+  // 循环播放
+  LOOP = 0,
+  // 单曲循环
+  SINGLE = 1,
+  // 随机播放
+  RANDOM = 2
 }
 

@@ -4,7 +4,7 @@ import { IUserInfoBean, STORAGE_USER_INFO, UserInfoBean } from '../../../..'
 
 
 /**
- * 我的页面头部组件
+ * 我的页面滚动头部组件
  */
 @Component
 export struct CpnMyHeader {

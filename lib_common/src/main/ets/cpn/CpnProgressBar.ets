@@ -1,5 +1,8 @@
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 
+/**
+ * 进度条组件
+ */
 @Component
 export struct CpnProgressBar {
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT

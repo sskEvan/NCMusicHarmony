@@ -1,6 +1,9 @@
 
 import { ListDataSource, SizeConstant } from 'lib_common'
 
+/**
+ * 歌词组件
+ */
 @Component
 export struct CpnLyric {
   lazyDataSource: ListDataSource = new ListDataSource()

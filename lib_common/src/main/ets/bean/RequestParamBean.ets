@@ -14,7 +14,7 @@ export interface IRequestBean {
   pagingMediator?: PagingLayoutMediator,
   // 请求成功条件，默认code==200
   successCondition?: (result: object) => boolean
-  // 范围空条件
+  // 判断空条件
   emptyCondition?: (result: object) => boolean
   // 分页数据转换
   pagingListConverter?: (result: object) => object[]

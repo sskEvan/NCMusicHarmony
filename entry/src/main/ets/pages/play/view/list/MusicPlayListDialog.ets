@@ -2,7 +2,9 @@ import { SizeConstant, TabItem, TabLayout, TabLayoutPagerMediator, TabPager } fr
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import { CurrentMusicPlayList, HistoryMusicPlayList } from '../../../..'
 
-
+/**
+ * 音乐播放列表底部弹框
+ */
 @CustomDialog
 export struct MusicPlayListDialog {
   controller: CustomDialogController

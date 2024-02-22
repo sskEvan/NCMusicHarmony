@@ -2,6 +2,9 @@ import { CommonNetworkImage, SizeConstant, TimeUtil } from 'lib_common'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import { CommentBean } from '../..'
 
+/**
+ * 评论item组件
+ */
 @Component
 export struct CpnCommentItem {
   bean: CommentBean

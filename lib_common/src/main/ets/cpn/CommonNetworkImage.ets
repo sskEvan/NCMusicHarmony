@@ -1,3 +1,7 @@
+/**
+ * 通用网络图片加载组件
+ * 添加placeHolder功能
+ */
 @Component
 export struct CommonNetworkImage {
   url: string = ""
@@ -44,9 +48,6 @@ export struct CommonNetworkImage {
         .visibility(this.status == NetworkImageLoadStatus.SUCCESS ? Visibility.Visible : Visibility.Hidden)
         // .opacity(this.imageOpacity)
     }
-    // Image(this.url)
-    //   .width("100%")
-    //   .height("100%")
   }
 }
 

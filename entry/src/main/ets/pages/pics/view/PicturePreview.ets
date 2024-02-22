@@ -2,6 +2,9 @@ import { SizeConstant, TabLayoutPagerMediator, TabPager } from 'lib_common'
 import { CommonAppBar } from 'lib_common'
 import router from '@ohos.router'
 
+/**
+ * 图片预览页面
+ */
 @Entry
 @Component
 struct PicturePreviewPage {
@@ -13,7 +16,7 @@ struct PicturePreviewPage {
     this.pics = params.pics
     this.tabMediator = new TabLayoutPagerMediator({
       tabItems: this.pics,
-      cacheCount: 0,  // 动态改变TabPager的cacheCount为0，否则如果有多张图片的时候，打开页面、退出页面做共享动画会出现奇怪的效果
+      cacheCount: 0, // 动态改变TabPager的cacheCount为0，否则如果有多张图片的时候，打开页面、退出页面做共享动画会出现奇怪的效果
       currentIndex: params.index,
     })
   }
@@ -56,7 +59,7 @@ struct PicturePreviewPage {
   }
 
   @Builder CustomerTitleBuilder() {
-    Text(`${this.tabMediator.currentIndex + 1} / ${this.pics.length}`)
+    Text(`${Math.round(this.tabMediator.currentIndex) + 1} / ${this.pics.length}`)
       .fontSize(SizeConstant.TEXT_XL)
       .fontWeight(FontWeight.Bold)
       .fontColor(Color.White)

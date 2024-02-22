@@ -1,10 +1,10 @@
-/**
- * 空布局组件
- */
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import { ClickEffectLayout } from '../..'
 import { SizeConstant } from '../../constant/SizeConstant'
 
+/**
+ * 空状态布局组件
+ */
 @Preview
 @Component
 export struct ViewStateEmpty {

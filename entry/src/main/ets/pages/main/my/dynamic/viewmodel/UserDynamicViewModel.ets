@@ -1,7 +1,10 @@
 import { BaseViewModel, PagingLayoutMediator, RequestBean, ViewState } from 'lib_common';
-import { DynamicBean, UserDynamicResultBean } from '../../../../bean/DynamicResultBean';
-import { ApiConstant } from '../../../..';
+import { DynamicBean, UserDynamicResultBean } from '../../../../../bean/DynamicResultBean';
+import { ApiConstant } from '../../../../..';
 
+/**
+ * 首页-我的-动态ViewModel
+ */
 export class UserDynamicViewModel extends BaseViewModel {
 
    lastTime : number = -1

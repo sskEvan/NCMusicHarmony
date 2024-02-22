@@ -1,3 +1,6 @@
+/**
+ * 历史播放列表组件（底部播放列表弹框中）
+ */
 @Component
 export struct HistoryMusicPlayList {
   build() {

@@ -1,4 +1,3 @@
-import display from '@ohos.display'
 export class ScreenUtils {
   static avoidArea
 

@@ -1,16 +1,9 @@
-import { plainToClass } from 'class-transformer'
 import { KEY_COOKIE, KVUtil } from 'lib_common'
 import { KVConstants, STORAGE_USER_INFO } from '..'
 import { UserInfoBean } from '../../bean'
 
 export class UserManager {
   static async getUserInfo(): Promise<UserInfoBean> {
-    // const json = await KVUtil.getString(KVConstants.KEY_USER_INFO)
-    // let userInfo: UserInfoModel = null
-    // if (json) {
-    //   userInfo = plainToClass(UserInfoModel, json)
-    // }
-    // return userInfo
     const result = await KVUtil.get<UserInfoBean>(KVConstants.KEY_USER_INFO)
     return result
   }

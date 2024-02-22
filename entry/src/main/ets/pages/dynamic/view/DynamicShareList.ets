@@ -1,6 +1,9 @@
 import { CollapsibleMediator, SizeConstant } from 'lib_common'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 
+/**
+ * 动态转发用户列表页面
+ */
 @Component
 export struct DynamicShareListPage {
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT

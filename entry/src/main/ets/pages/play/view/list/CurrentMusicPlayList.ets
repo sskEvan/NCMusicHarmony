@@ -1,40 +1,49 @@
-import { ClickEffectLayout, CpnLoading, ListDataSource, LogUtil } from 'lib_common'
+import { ClickEffectLayout, CpnLoading, ListDataSource } from 'lib_common'
 import { SizeConstant } from 'lib_common'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
-import { MusicPlayController, PlayStore, SongBean, STORAGE_PLAY_STORE, PlayModeType } from '../../../..'
+import { MusicPlayController, SongBean, PlayerMode, EventIds } from '../../../..'
+import emitter from '@ohos.events.emitter'
 
+/**
+ * 当前播放列表组件（底部播放列表弹框中）
+ */
 @Component
 export struct CurrentMusicPlayList {
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT
-  @StorageLink(STORAGE_PLAY_STORE) @Watch("playerStoreChange") playerStore: PlayStore = new PlayStore({})
   lazyDataSource: ListDataSource = new ListDataSource()
-  lastPlayMode: PlayModeType
+  // 播放模式
+  @State playerMode: PlayerMode | undefined = undefined
+  // 当前播放索引
+  @State playerIndex: number = 0
 
   aboutToAppear() {
     this.lazyDataSource.reloadData(MusicPlayController.playList)
-    this.lastPlayMode = this.playerStore.playMode
-  }
-
-  playerStoreChange() {
-    if ((this.lastPlayMode == PlayModeType.RANDOM && this.playerStore.playMode != PlayModeType.RANDOM)
-    || (this.lastPlayMode != PlayModeType.RANDOM && this.playerStore.playMode == PlayModeType.RANDOM)) {
-      this.lazyDataSource.reloadData(MusicPlayController.playList)
-      // for (let index = 0; index < MusicPlayController.playList.length; index++) {
-      //   LogUtil.debug("playerStoreChange reloadData: " + MusicPlayController.playList[index].name)
-      // }
-    }
-    this.lastPlayMode = this.playerStore.playMode
+    this.playerMode = MusicPlayController.playerMode
+    this.playerIndex = MusicPlayController.playerIndex
+    // 监听播放模式
+    emitter.on({ eventId: EventIds.PLAYER_MODE }, (data) => {
+      const newPlayerMode = data.data.playerMode
+      if ((this.playerMode == PlayerMode.RANDOM && newPlayerMode != PlayerMode.RANDOM)
+      || (this.playerMode != PlayerMode.RANDOM && newPlayerMode == PlayerMode.RANDOM)) {
+        this.lazyDataSource.reloadData(MusicPlayController.playList)
+      }
+      this.playerMode = newPlayerMode
+    })
+    // 监听播放列表索引
+    emitter.on({ eventId: EventIds.PLAYER_INDEX }, (data) => {
+      this.playerIndex = data.data.index
+    })
   }
 
   @Builder ActionHeaderBuilder() {
     Row() {
       ClickEffectLayout({ click: () => {
-        if (this.playerStore.playMode == PlayModeType.LOOP) {
-          MusicPlayController.setPlayMode(PlayModeType.SINGLE)
-        } else if (this.playerStore.playMode == PlayModeType.SINGLE) {
-          MusicPlayController.setPlayMode(PlayModeType.RANDOM)
+        if (this.playerMode == PlayerMode.LOOP) {
+          MusicPlayController.setPlayMode(PlayerMode.SINGLE)
+        } else if (this.playerMode == PlayerMode.SINGLE) {
+          MusicPlayController.setPlayMode(PlayerMode.RANDOM)
         } else {
-          MusicPlayController.setPlayMode(PlayModeType.LOOP)
+          MusicPlayController.setPlayMode(PlayerMode.LOOP)
         }
       } }) {
         Row() {
@@ -82,9 +91,9 @@ export struct CurrentMusicPlayList {
   }
 
   getPlayModeIcon(): Resource {
-    if (this.playerStore.playMode == PlayModeType.SINGLE) {
+    if (this.playerMode == PlayerMode.SINGLE) {
       return $r('app.media.ic_play_mode_single')
-    } else if (this.playerStore.playMode == PlayModeType.LOOP) {
+    } else if (this.playerMode == PlayerMode.LOOP) {
       return $r('app.media.ic_play_mode_repeat')
     } else {
       return $r('app.media.ic_play_mode_random')
@@ -92,9 +101,9 @@ export struct CurrentMusicPlayList {
   }
 
   getPlayModeText(): string {
-    if (this.playerStore.playMode == PlayModeType.SINGLE) {
+    if (this.playerMode == PlayerMode.SINGLE) {
       return "单曲循环"
-    } else if (this.playerStore.playMode == PlayModeType.LOOP) {
+    } else if (this.playerMode == PlayerMode.LOOP) {
       return "循环播放"
     } else {
       return "随机播放"
@@ -121,7 +130,7 @@ export struct CurrentMusicPlayList {
       MusicPlayController.play(index)
     } }) {
       Row() {
-        if (index == this.playerStore.index) {
+        if (index == this.playerIndex) {
           CpnLoading({ loadingWidth: 13, loadingHeight: 11 }).margin({ right: SizeConstant.SPACE_M })
         }
         Text() {

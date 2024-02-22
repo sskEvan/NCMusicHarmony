@@ -1,6 +1,9 @@
 import { CollapsibleMediator, SizeConstant } from 'lib_common'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 
+/**
+ * 首页-我的-播客-我的播客页面
+ */
 @Component
 export struct MyPodcastPage {
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT

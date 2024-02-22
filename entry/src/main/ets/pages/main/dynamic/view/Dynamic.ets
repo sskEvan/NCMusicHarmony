@@ -2,6 +2,9 @@ import { CommonAppBar, TabItem, TabLayout, TabLayoutPagerMediator, TabPager, Siz
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import { AttentionDynamicPage, SquareDynamicPage} from '../../../..'
 
+/**
+ * 首页-动态页面
+ */
 @Component
 export struct DynamicPage {
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT

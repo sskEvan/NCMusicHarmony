@@ -3,6 +3,9 @@ import { CollapsibleMediator, ViewStatePagingLayout } from 'lib_common'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import { AlbumBean, albumViewModel, CpnAlbumItem } from '../../../../..'
 
+/**
+ * 首页-我的-音乐-专辑页面
+ */
 @Component
 export struct AlbumMusicPage {
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT

@@ -4,11 +4,13 @@ import { ScreenUtils } from '..'
 import { SizeConstant } from '../constant'
 import { ClickEffectLayout } from './ClickEffectLayout'
 
+/**
+ * 通用标题栏
+ */
 @Component
 export struct CommonAppBar {
   private bgColor?: ResourceColor = null
   private contentColor?: ResourceColor = null
-
   private title?: string = null
   private leftIcon?: Resource = null
   private rightIcons?: Resource[] = null
@@ -68,13 +70,15 @@ export struct CommonAppBar {
               }
             }
           }.width("56%")
-          .alignRules(this.titleCenter ? {
-                                           middle: { anchor: '__container__', align: HorizontalAlign.Center },
-                                           center: { anchor: '__container__', align: VerticalAlign.Center }
-                                         } : {
-                                               left: { anchor: 'left', align: HorizontalAlign.End },
-                                               center: { anchor: '__container__', align: VerticalAlign.Center }
-                                             })
+          .alignRules(this.titleCenter ?
+            {
+              middle: { anchor: '__container__', align: HorizontalAlign.Center },
+              center: { anchor: '__container__', align: VerticalAlign.Center }
+            } :
+            {
+              left: { anchor: 'left', align: HorizontalAlign.End },
+              center: { anchor: '__container__', align: VerticalAlign.Center }
+            })
           .id("center")
 
           // 右边布局

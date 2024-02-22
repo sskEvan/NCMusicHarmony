@@ -2,6 +2,9 @@ import { CollapsibleMediator, ViewStatePagingLayout, PagingLayoutMediator, ViewS
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import { UserPlaylistBean, UserManager, songSheetViewModel, CpnSongSheetItem } from '../../../../..'
 
+/**
+ * 首页-我的-音乐-创建页面
+ */
 @Component
 export struct CreateMusicPage {
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT

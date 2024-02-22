@@ -1,5 +1,8 @@
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 
+/**
+ * 加载组件
+ */
 @Preview
 @Component
 export struct CpnLoading {
@@ -26,14 +29,6 @@ export struct CpnLoading {
     .alignItems(VerticalAlign.Bottom)
     .width(this.loadingWidth)
     .height(this.loadingHeight)
-    // .onAreaChange(() => {
-    //   console.log("CpnLoading", "CpnLoading onAreaChange")
-    //   this.doAnim()
-    // })
-    // .onAppear(() => {
-    //   console.log("CpnLoading", "CpnLoading appear")
-    //   this.doAnim()
-    // })
     .onVisibleAreaChange([0, 1], (isVisible: boolean, currentRatio: number) => {
       if (isVisible) {
         console.log("CpnLoading", "CpnLoading isVisible=" + isVisible + ",currentRatio:" + currentRatio)

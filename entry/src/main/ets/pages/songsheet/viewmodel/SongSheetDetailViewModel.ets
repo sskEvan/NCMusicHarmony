@@ -3,6 +3,9 @@ import { SongSheetDetailResultBean } from '../../../bean/SongSheetDetailResultBe
 import { UserPlayListDetailResultBean } from '../../../bean/UserPlaylistResultBean';
 import { ApiConstant } from '../../../common';
 
+/**
+ * 歌单详情ViewModel
+ */
 export class SongSheetDetailViewModel extends BaseViewModel {
   async getSongDetail(id: number,
                       viewState: ViewState,

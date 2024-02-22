@@ -2,12 +2,16 @@ import { ViewStateEmpty } from './ViewStateEmpty'
 import { ViewStateError } from './ViewStateError'
 import { ViewStateLoading } from './ViewStateLoading'
 
+/**
+ * 页面状态切换组件
+ */
 @Component
 export default struct ViewStateLayout {
   @State viewState: ViewState = new ViewState(ViewStateType.LOADING)
-  onLoadData: (viewState: ViewState) => void = () => {
-  }
+  // 数据加载回调
+  onLoadData: (viewState: ViewState) => void = () => {}
 
+  // 重新加载
   onRetry() {
     this.onLoadData(this.viewState)
   }
@@ -53,7 +57,6 @@ export class ViewState {
     this.type = type
   }
 }
-
 
 export enum ViewStateType {
   LOADING = 0,

@@ -2,6 +2,9 @@ import { BaseViewModel, PagingLayoutMediator, RequestBean, ViewState } from 'lib
 import { UserPlaylistBean, UserPlaylistResultBean } from '../../../../../bean/UserPlaylistResultBean';
 import { ApiConstant } from '../../../../../common';
 
+/**
+ * 首页-我的-音乐-歌单ViewModel
+ */
 export class SongSheetViewModel extends BaseViewModel {
   async getUserPlayList(uid: string,
                         isSelfCreate: boolean,

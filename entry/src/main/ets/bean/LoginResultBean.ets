@@ -1,4 +1,5 @@
 import { BaseResultBean } from 'lib_common'
+
 /** 登陆二维码key请求结果实体类 */
 export class QrcodeKeyResultBean extends BaseResultBean {
   data: QrcodeKeyBean

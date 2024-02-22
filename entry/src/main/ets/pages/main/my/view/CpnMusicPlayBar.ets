@@ -1,18 +1,38 @@
 import router from '@ohos.router'
 import { ClickEffectLayout, RouterUrls, SizeConstant } from 'lib_common'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
-import { MusicPlayController, PlayStore, STORAGE_PLAY_STORE, PlayerStatus, MusicPlayListDialog } from '../../../..'
+import { MusicPlayController, PlayerStatus, MusicPlayListDialog, EventIds } from '../../../..'
+import emitter from '@ohos.events.emitter'
 
+/**
+ * 底部音乐播放栏组件
+ */
 @Component
 export struct CpnMusicPlayBar {
-  @StorageLink(STORAGE_PLAY_STORE) playerStore: Partial<PlayStore> = {}
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT
   customDialogController: CustomDialogController = new CustomDialogController({
-    builder: MusicPlayListDialog(), // 结构 CustomBuilder结构 可以传组件结构
-    customStyle: true, // 自由设置样式-builder样式才不会受影响
+    builder: MusicPlayListDialog(),
+    customStyle: true,
     alignment: DialogAlignment.Bottom,
     autoCancel: true
   })
+  // 当前播放索引
+  @State playerIndex: number = 0
+  // 播放状态
+  @State playerStatus: PlayerStatus | undefined = undefined
+
+  aboutToAppear() {
+    this.playerIndex = MusicPlayController.playerIndex
+    // 监听播放列表索引
+    emitter.on({ eventId: EventIds.PLAYER_INDEX }, (data) => {
+      this.playerIndex = data.data.index
+    })
+    // 监听播放状态
+    emitter.on({ eventId: EventIds.PLAYER_STATUS }, (data) => {
+      this.playerStatus = data.data.status
+    })
+  }
+
 
   build() {
     Column() {
@@ -20,29 +40,29 @@ export struct CpnMusicPlayBar {
         router.pushUrl({ url: RouterUrls.MusicPlay })
       } }) {
         Row() {
-          Image(MusicPlayController.playList[this.playerStore.index]?.al?.picUrl??"")
+          Image(MusicPlayController.playList[this.playerIndex]?.al?.picUrl??"")
             .width(30)
             .height(30)
             .borderRadius(SizeConstant.RADIUS_M)
             .margin({ right: SizeConstant.SPACE_S })
 
           Text() {
-            Span(MusicPlayController.playList[this.playerStore.index]?.name??"").fontSize(SizeConstant.TEXT_M)
+            Span(MusicPlayController.playList[this.playerIndex]?.name??"").fontSize(SizeConstant.TEXT_M)
               .fontColor(AppTheme.palette(this.themeType).firstText)
-            Span(` - ${MusicPlayController.playList[this.playerStore.index]?.ar[0]?.name??""}`)
+            Span(` - ${MusicPlayController.playList[this.playerIndex]?.ar[0]?.name??""}`)
               .fontSize(SizeConstant.TEXT_M)
               .fontColor(AppTheme.palette(this.themeType).thirdText)
           }.layoutWeight(1)
 
           Row() {
             ClickEffectLayout({ click: () => {
-              if (this.playerStore.playerStats == PlayerStatus.STARTED) {
+              if (this.playerStatus == PlayerStatus.STARTED) {
                 MusicPlayController.pause()
               } else {
                 MusicPlayController.start()
               }
             } }) {
-              Image(this.playerStore.playerStats == PlayerStatus.STARTED ? $r('app.media.ic_play_stop') : $r('app.media.ic_play_start'))
+              Image(this.playerStatus == PlayerStatus.STARTED ? $r('app.media.ic_play_stop') : $r('app.media.ic_play_start'))
                 .width(SizeConstant.ICON_L + SizeConstant.SPACE_S * 2)
                 .height(SizeConstant.ICON_L + SizeConstant.SPACE_S * 2)
                 .padding(SizeConstant.SPACE_S)

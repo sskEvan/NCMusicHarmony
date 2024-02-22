@@ -7,8 +7,6 @@ import {
   CommonNetworkImage,
 } from 'lib_common'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
-import { NCPlayer, PlayModeType, PlayStore } from '../../../..'
-import { STORAGE_PLAY_STORE } from '../../../../common/constant/StorageConstant'
 
 @Component
 export struct DiscoveryPage {
@@ -47,7 +45,6 @@ export struct DiscoveryPage {
   }
 
   testUrl = "https://www.baidu.com/link?url=jyTSJCYjt6pewWjhIhC5M1W9-kZIMIzi1BLPEqXNHPVmr9hWWKGvSFbVBui0Rw-9x_bTi1_G1VvPSyzHtNkq4SiXECSF9YfNLqwLfo4NtBK5uir8lD0_b2q3Tmy_B9IyaXjIOrKVbjQxbeyww7gzZU5tzkwrK91A99NsrQT5X2vR60sTwZsjaNtiIB-bA8sgRgxUbYE6RkSd9z-c2zO1VRUFNZQLlnIWlG3kmsU7N6CT16CPfDwrFaM8ktehlk-VAbewdjQemLveErVB1Mtx0CxyNynvtex2rIIIurFqQJrkilCZpuhwNfPB7V3scUv0tRk0SfPdrkF7I2dy5PYVEigZrZ_2HskaXKW9frDnloSEG-_zMFT22JFkbv_aG6zOlnPhksCGbEsb5t69na1SLng5lfwP-eVpqVoxHsBhDhwQvfefIC6vn4wjSnm2-2ijAu28bz2iDnwgm-cwni6M6GwJHjmiaBNCL-08MVgn5Gr2UEeKDVcQTaKtKM0BDhexrdmbBwNAmrJ1z4KnDcdMo5Ypu3fSyUnrrFPVLRuJxPg_TcxmHUSFkYMKWDNvta6LHW82UtXXnBFl6livfJ3-ZDUplsBuRI-5yivhlS6jvRZoctov_mF-o_uVKIatGIU5u68O883PEcHn6dUhkPcp6N7lHls1R94nrUW0a9mOAuRsGTms6DLia6sGksz9lkUGgBV3-Bh2pDX97UyxOzTr7iAysxbqx9FCVSFn_mEPJpO&wd=&eqid=9e1621870000da3f0000000665c2f910"
-  @StorageLink(STORAGE_PLAY_STORE) playStore: PlayStore = new PlayStore({ index: 2 })
 
   build() {
     Column() {
@@ -61,7 +58,6 @@ export struct DiscoveryPage {
       })
       Button("单曲循环").onClick(() => {
       })
-      Text(JSON.stringify(this.playStore))
     }.width("100%").height("100%").backgroundColor(AppTheme.palette(this.themeType).commonBackground)
 
     // ViewStatePagingLayout({

@@ -3,6 +3,9 @@ import { ClickEffectLayout, CommonNetworkImage, RouterUrls, SizeConstant } from 
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import { UserPlaylistBean } from '../../../..'
 
+/**
+ * 歌单item组件
+ */
 @Component
 export struct CpnSongSheetItem {
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT

@@ -5,7 +5,9 @@ import { IUserInfoBean, UserInfoBean } from '../../../bean/LoginResultBean'
 import { UserManager } from '../../../common/core/UserManager'
 import { STORAGE_USER_INFO } from '../../../common'
 
-
+/**
+ * 欢迎页面
+ */
 @Entry
 @Component
 export default struct SplashPage {

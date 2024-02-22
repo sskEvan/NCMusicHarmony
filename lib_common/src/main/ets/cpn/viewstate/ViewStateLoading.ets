@@ -2,6 +2,9 @@ import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import { CpnLoading } from '..'
 import { SizeConstant } from '../..'
 
+/**
+ * 加载状态布局组件
+ */
 @Preview
 @Component
 export struct ViewStateLoading {

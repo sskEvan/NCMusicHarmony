@@ -2,6 +2,9 @@ import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import { SizeConstant } from '../constant/SizeConstant'
 import { CpnLoading } from './CpnLoading'
 
+/**
+ * 下拉刷新、上拉加载更多布局
+ */
 @Component
 export struct RefreshLayout {
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT

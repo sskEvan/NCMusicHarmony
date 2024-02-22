@@ -1,23 +1,32 @@
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import { SizeConstant } from 'lib_common'
-import { DiscoveryPage, CpnMusicPlayBar, DynamicPage, MyPage } from '../'
-import { MusicPlayController, PlayerStatus, PlayStore, STORAGE_PLAY_STORE } from '../../..'
+import { DiscoveryPage, CpnMusicPlayBar, DynamicPage, MyPage, PodcastPage } from '../'
+import { EventIds, MusicPlayController, PlayerStatus } from '../../..'
+import emitter from '@ohos.events.emitter'
 
-
+/**
+ * 首页
+ */
 @Entry
 @Component
 struct MainPage {
-  @StorageLink(STORAGE_PLAY_STORE) playerStore: Partial<PlayStore> = {}
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT
   @State selectedIndex: number = 0
   private tabItems: TabItem[] = [new TabItem(0, "发现", $r('app.media.ic_nav_discovery')),
     new TabItem(1, "播客", $r('app.media.ic_nav_podcast')),
     new TabItem(2, "我的", $r('app.media.ic_nav_my')),
     new TabItem(3, "动态", $r('app.media.ic_nav_dynamic')),]
+  // 播放状态
+  @State playerStatus: PlayerStatus | undefined = undefined
 
   aboutToAppear() {
     MusicPlayController.init()
+    // 监听播放状态
+    emitter.on({ eventId: EventIds.PLAYER_STATUS }, (data) => {
+      this.playerStatus = data.data.status
+    })
   }
+
 
   build() {
     Stack({ alignContent: Alignment.BottomStart }) {
@@ -31,7 +40,7 @@ struct MainPage {
         .margin({ bottom: this.getContentMarginBottom() })
 
         TabContent() {
-          // PodcastPage()
+          PodcastPage()
         }.tabBar(this.TabItemBuilder(this.tabItems[1]))
         .margin({ bottom: this.getContentMarginBottom() })
 
@@ -53,14 +62,14 @@ struct MainPage {
         this.selectedIndex = index
       })
 
-      if ((this.playerStore.playerStats ?? PlayerStatus.IDLE) !== PlayerStatus.IDLE) {
+      if ((this.playerStatus ?? PlayerStatus.NONE) !== PlayerStatus.NONE) {
         CpnMusicPlayBar().margin({ bottom: SizeConstant.NAV_BAR_HEIGHT })
       }
     }
   }
 
   getContentMarginBottom(): number {
-    return (this.playerStore.playerStats ?? PlayerStatus.IDLE) ? SizeConstant.MUSIC_PLAY_BAR_HEIGHT : 0
+    return (this.playerStatus ?? PlayerStatus.NONE) ? SizeConstant.MUSIC_PLAY_BAR_HEIGHT : 0
   }
 
   @Builder TabItemBuilder(item: TabItem) {

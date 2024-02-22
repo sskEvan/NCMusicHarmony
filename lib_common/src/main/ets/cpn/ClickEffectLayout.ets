@@ -1,5 +1,9 @@
 let globalClickEffecting: boolean = false
 
+/**
+ * 自定义点击效果容器
+ * 点击的时候，被包裹的组件，会做透明度1->0.8,缩放1->0.97的动画
+ */
 @Component
 export struct ClickEffectLayout {
   @BuilderParam private content: () => void

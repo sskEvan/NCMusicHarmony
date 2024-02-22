@@ -11,7 +11,7 @@ import {
 } from 'lib_common'
 import { IUserInfoBean, UserInfoBean } from '../../../../bean/LoginResultBean'
 import { CpnMyHeader } from './CpnMyHeader'
-import { MyDynamicPage } from '../dynamic/MyDynamic'
+import { MyDynamicPage } from '../dynamic/view/MyDynamic'
 import { AlbumMusicPage } from '../music/view/AlbumMusic'
 import { CollectMusicPage } from '../music/view/CollectMusic'
 import { CreateMusicPage } from '../music/view/CreateMusic'
@@ -21,6 +21,9 @@ import { VoiceBookPage } from '../podcast/view/VoiceBook'
 import { STORAGE_USER_INFO } from '../../../../common'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 
+/**
+ * 首页-我的页面
+ */
 @Preview
 @Component
 export struct MyPage {

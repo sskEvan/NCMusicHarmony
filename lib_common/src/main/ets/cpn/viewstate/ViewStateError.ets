@@ -2,6 +2,9 @@ import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import { ClickEffectLayout } from '..'
 import { SizeConstant } from '../..'
 
+/**
+ * 错误状态布局组件
+ */
 @Preview
 @Component
 export struct ViewStateError {

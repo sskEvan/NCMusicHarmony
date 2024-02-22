@@ -2,6 +2,9 @@ import { PagingLayoutMediator, ViewState, ViewStatePagingLayout, } from 'lib_com
 import { AppTheme, THEME_TYPE, ThemeType } from 'lib_theme'
 import { DynamicBean, CpnDynamicItem, attentionDynamicViewModel } from '../../../../'
 
+/**
+ * 首页-动态-关注页面
+ */
 @Component
 export struct AttentionDynamicPage {
   @State pagingLayoutMediator: PagingLayoutMediator = new PagingLayoutMediator({})

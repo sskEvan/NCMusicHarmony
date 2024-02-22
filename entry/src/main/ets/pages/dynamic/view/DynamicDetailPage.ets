@@ -20,6 +20,9 @@ import {
 } from '../../..'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 
+/**
+ * 动态详情页面
+ */
 @Entry
 @Component
 struct DynamicDetailPage {

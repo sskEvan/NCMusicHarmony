@@ -1,5 +1,8 @@
 import { BaseResultBean } from 'lib_common'
 
+/**
+ * 评论请求结果实体类
+ */
 export class CommentResultBean extends BaseResultBean {
   comments: CommentBean[]
 }

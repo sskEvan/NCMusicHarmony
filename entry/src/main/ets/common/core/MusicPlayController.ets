@@ -1,36 +1,64 @@
-import { EventIds, NCPlayer, PlayerStatus, SongBean, STORAGE_PLAY_STORE } from '../..'
+import { EventIds, NCPlayer, SongBean, PlayerStatus, PlayerMode } from '../..'
 import { LogUtil } from 'lib_common'
 import emitter from '@ohos.events.emitter'
 
+/**
+ * 音乐播放控制器，给UI层调用
+ */
 export class MusicPlayController {
+  // 原始歌曲列表（随机播放模式恢复到原始顺序时用到）
   static originPlayList?: SongBean[]
+  // 歌曲列表
   static playList?: SongBean[]
+  // 歌曲列表id
   static playListId: number = 0
+  // 当前播放索引
+  static playerIndex: number = -1
+  // 总时长
+  static totalDuring: number = 0
+  // 当前播放时长
+  static currentDuring: number = 0
+  // 播放模式
+  static playerMode: PlayerMode | undefined = undefined
+  // 播放状态
+  static playerStatus: PlayerStatus | undefined = undefined
 
   static async init() {
     await NCPlayer.initPlayer()
-    // 监听播放状态
+    this.playerMode = PlayerMode.LOOP
+    this.playerStatus = PlayerStatus.NONE
+    // 订阅播放状态
     emitter.on({ eventId: EventIds.PLAYER_STATUS }, (data) => {
       LogUtil.debug("--MusicPlayController--监听播放器状态:" + data.data.status)
-      const playerStore = this.getPlayStore()
-      playerStore.playerStats = data.data.status as PlayerStatus
-      this.updatePlayStore(playerStore)
+      this.playerStatus = data.data.status
+      if (data.data.status == PlayerStatus.COMPLETED) {
+        if (this.playerMode == PlayerMode.SINGLE) {
+          this.play(this.playerIndex, true)
+        } else {
+          this.playNext()
+        }
+      }
     })
-    // 监听播放总长度
-    emitter.on({ eventId: EventIds.PLAYER_DURING }, (data) => {
-      const playerStore = this.getPlayStore()
-      playerStore.totalDuring = data.data.during
-      this.updatePlayStore(playerStore)
-    })
-    // 监听当前播放长度
+
+    // 订阅当前播放时长
     emitter.on({ eventId: EventIds.PLAYER_TIME_UPDATE }, (data) => {
-      LogUtil.debug("--MusicPlayController--监听当前播放长度:" + data.data.timeUpdate)
-      const playerStore = this.getPlayStore()
-      playerStore.currentDuring = data.data.timeUpdate
-      this.updatePlayStore(playerStore)
+      this.currentDuring = data.data.timeUpdate
+    })
+
+    // 订阅播放总时长
+    emitter.on({ eventId: EventIds.PLAYER_DURING }, (data) => {
+      this.totalDuring = data.data.during
+    })
+
+    // 订阅播放模式
+    emitter.on({ eventId: EventIds.PLAYER_MODE }, (data) => {
+      this.playerMode = data.data.playerMode
     })
   }
 
+  /**
+   * 设置歌曲列表资源
+   */
   static setDataSource(playListId: number, playList: SongBean[]) {
     if (playListId != MusicPlayController.playListId) {
       MusicPlayController.originPlayList = playList
@@ -39,53 +67,76 @@ export class MusicPlayController {
     }
   }
 
-  static play(index: number) {
-    NCPlayer.stop()
-    const playerStore = this.getPlayStore()
-    playerStore.index = index
-    playerStore.currentDuring = 0
-    playerStore.totalDuring = 0
-    this.updatePlayStore(playerStore)
-    NCPlayer.setDataSource(this.playList[index])
-  }
-
-  static start() {
-    NCPlayer.start()
-  }
-
-  static pause() {
-    NCPlayer.pause()
-  }
-
-  static seekTo(progress: number) {
-    const playerStore = this.getPlayStore()
-    playerStore.currentDuring = playerStore.totalDuring * progress / 100
-    this.updatePlayStore(playerStore)
-    LogUtil.debug("------------------MusicPlayController--------------seekTo:" + playerStore.currentDuring)
-    if (playerStore.currentDuring != 0 && playerStore.totalDuring != 0) {
-      NCPlayer.seekTo(playerStore.totalDuring * progress / 100)
+  /**
+   * 根据索引播放歌曲
+   */
+  static async play(index: number, forceReset: boolean = false) {
+    LogUtil.debug("--MusicPlayController--play,index:" + index + ",this.playerIndex=" + this.playerIndex + ",forceReset=" + forceReset)
+    if (this.playerIndex != index || forceReset) {
+      this.playerIndex = index
+      // 重置播放时长
+      const timeUpdate = 0
+      const during = 0
+      this.playerStatus == PlayerStatus.IDLE
+      emitter.emit({ eventId: EventIds.PLAYER_TIME_UPDATE }, { data: { timeUpdate } })
+      emitter.emit({ eventId: EventIds.PLAYER_DURING }, { data: { during } })
+      emitter.emit({ eventId: EventIds.PLAYER_INDEX }, { data: { index } })
+      await NCPlayer.setDataSource(this.playList[index])
+    } else {
+      await NCPlayer.start()
     }
   }
 
+  /**
+   * 播放
+   */
+  static start() {
+    LogUtil.debug("--MusicPlayController--start")
+    NCPlayer.start()
+  }
+
+  /**
+   * 暂停播放
+   */
+  static pause() {
+    LogUtil.debug("--MusicPlayController--pause")
+    NCPlayer.pause()
+  }
+
+  /**
+   * 拖动进度
+   */
+  static seekTo(ms: number) {
+    LogUtil.debug("--MusicPlayController--seekTo:" + ms)
+    NCPlayer.seekTo(ms)
+  }
+
+  /**
+   * 停止播放
+   */
   static stop() {
+    LogUtil.debug("--MusicPlayController--stop")
     NCPlayer.stop()
   }
 
-  static setPlayMode(playMode: PlayModeType) {
-    const playerStore = this.getPlayStore()
-    if (playMode == PlayModeType.RANDOM) {
+  /**
+   * 切换播放模式
+   */
+  static setPlayMode(playerMode: PlayerMode) {
+    this.playerMode = playerMode
+    if (playerMode == PlayerMode.RANDOM) {
       const shuffledIndices = Array.from({ length: MusicPlayController.playList.length }, (_, i) => i)
         .sort(() => Math.random() - 0.5);
       const shuffledArr = shuffledIndices.map(i => MusicPlayController.playList[i])
       MusicPlayController.playList = shuffledArr
       const currentPlayIndex = MusicPlayController.playList.findIndex((item: SongBean) => {
-        return item.id == MusicPlayController.originPlayList[playerStore.index].id
+        return item.id == MusicPlayController.originPlayList[this.playerIndex].id
       })
-      if (currentPlayIndex != playerStore.index && currentPlayIndex != -1) {
-        const temp = MusicPlayController.playList[playerStore.index]
-        MusicPlayController.playList[playerStore.index] = MusicPlayController.originPlayList[playerStore.index]
+      if (currentPlayIndex != this.playerIndex && currentPlayIndex != -1) {
+        const temp = MusicPlayController.playList[this.playerIndex]
+        MusicPlayController.playList[this.playerIndex] = MusicPlayController.originPlayList[this.playerIndex]
         MusicPlayController.playList[currentPlayIndex] = temp
-        LogUtil.debug("替换歌曲," + currentPlayIndex + "=>" + playerStore.index)
+        LogUtil.debug("替换歌曲," + currentPlayIndex + "=>" + this.playerIndex)
       }
       for (let index = 0; index < MusicPlayController.originPlayList.length; index++) {
         const element = MusicPlayController.originPlayList[index];
@@ -97,11 +148,11 @@ export class MusicPlayController {
       }
     } else {
       const currentPlayIndex = MusicPlayController.originPlayList.findIndex((item: SongBean) => {
-        return item.id == MusicPlayController.playList[playerStore.index].id
+        return item.id == MusicPlayController.playList[this.playerIndex].id
       })
-      if (currentPlayIndex != playerStore.index && currentPlayIndex != -1) {
-        LogUtil.debug("替换歌曲索引," + playerStore.index + "=>" + +currentPlayIndex)
-        playerStore.index = currentPlayIndex
+      if (currentPlayIndex != this.playerIndex && currentPlayIndex != -1) {
+        LogUtil.debug("替换歌曲索引," + this.playerIndex + "=>" + +currentPlayIndex)
+        this.playerIndex = currentPlayIndex
       }
       MusicPlayController.playList = MusicPlayController.originPlayList
       for (let index = 0; index < MusicPlayController.playList.length; index++) {
@@ -109,78 +160,75 @@ export class MusicPlayController {
         LogUtil.debug(element.name)
       }
     }
-    playerStore.playMode = playMode
-    this.updatePlayStore(playerStore)
+    emitter.emit({ eventId: EventIds.PLAYER_MODE }, { data: { playerMode } })
   }
 
+  /**
+   * 播放下一首
+   */
   static playNext() {
-    const playerStore = this.getPlayStore()
     let targetIndex = 0
-    if (playerStore.index == this.playList.length - 1) {
+    if (this.playerIndex == this.playList.length - 1) {
       targetIndex = 0
     } else {
-      targetIndex = playerStore.index + 1
+      targetIndex = this.playerIndex + 1
     }
+    LogUtil.debug("--MusicPlayController--playNext, curIndex:" + this.playerIndex + ",targetIndex=" + targetIndex)
     this.play(targetIndex)
   }
 
+  /**
+   * 播放上一首
+   */
   static playPre() {
-    const playerStore = this.getPlayStore()
     let targetIndex = 0
-    if (playerStore.index == 0) {
+    if (this.playerIndex == 0) {
       targetIndex = this.playList.length - 1
     } else {
-      targetIndex = playerStore.index - 1
+      targetIndex = this.playerIndex - 1
     }
+    LogUtil.debug("--MusicPlayController--playPre, curIndex:" + this.playerIndex + ",targetIndex=" + targetIndex)
     this.play(targetIndex)
   }
-
-  private  static getPlayStore(): PlayStore {
-    return AppStorage.Get<PlayStore>(STORAGE_PLAY_STORE)
-  }
-
-  private static updatePlayStore(playerStore: PlayStore) {
-    AppStorage.Set(STORAGE_PLAY_STORE, new PlayStore(playerStore))
-  }
 }
 
-export enum PlayModeType {
-  LOOP = 0,
-  SINGLE = 1,
-  RANDOM = 2
-}
 
-export interface IPlayStore {
-  index?: number
-  totalDuring?: number
-  currentDuring?: number
-  playMode?: PlayModeType
-  playerStats?: PlayerStatus
-}
+/**
+ * 存储播放器中的一些关键信息，原本设计时把这些关键信息存进AppStorage中，从而驱动不同页面相关组件的UI渲染
+ * 后面当界面中有一些循环动画的时候，例如音乐播放界面中的唱片旋转动画，频繁更新PlayStore会造成卡顿
+ * 最后决定使用emitter通信，来通知、订阅播放过程中的一些关键信息。
+ */
+// export class PlayStore implements IPlayStore {
+//   index: number = 0
+//   totalDuring: number = 0
+//   // currentDuring: number = 0
+//   playMode: PlayModeType = PlayModeType.LOOP
+//   playerStatus: PlayerStatus = PlayerStatus.IDLE
+//
+//   constructor(model: IPlayStore) {
+//     if (model.index) {
+//       this.index = model.index
+//     }
+//     if (model.totalDuring) {
+//       this.totalDuring = model.totalDuring
+//     }
+//     // if (model.currentDuring) {
+//     //   this.currentDuring = model.currentDuring
+//     // }
+//     if (model.playMode) {
+//       this.playMode = model.playMode
+//     }
+//
+//     if (model.playerStatus) {
+//       this.playerStatus = model.playerStatus
+//     }
+//   }
+// }
 
-export class PlayStore implements IPlayStore {
-  index: number = 0
-  totalDuring: number = 0
-  currentDuring: number = 0
-  playMode: PlayModeType = PlayModeType.LOOP
-  playerStats: PlayerStatus = PlayerStatus.IDLE
-
-  constructor(model: IPlayStore) {
-    if (model.index) {
-      this.index = model.index
-    }
-    if (model.totalDuring) {
-      this.totalDuring = model.totalDuring
-    }
-    if (model.currentDuring) {
-      this.currentDuring = model.currentDuring
-    }
-    if (model.playMode) {
-      this.playMode = model.playMode
-    }
-
-    if (model.playerStats) {
-      this.playerStats = model.playerStats
-    }
-  }
-}
+// export interface IPlayStore {
+//   index?: number
+//   totalDuring?: number
+//   currentDuring?: number
+//   playMode?: PlayModeType
+//   playerStatus?: PlayerStatus
+// }

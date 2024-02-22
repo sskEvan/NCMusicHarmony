@@ -2,8 +2,11 @@ import { SizeConstant } from 'lib_common'
 import ViewStateLayout from 'lib_common/src/main/ets/cpn/viewstate/ViewStateLayout'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import { QrcodeValueBean } from '../../../bean'
-import loginViewModel, { LoginAuthStep, LoginViewModel } from '../viewmodel/LoginViewModel'
+import loginViewModel, { LoginAuthStep } from '../viewmodel/LoginViewModel'
 
+/**
+ * 登陆页面
+ */
 @Entry
 @Component
 struct LoginPage {

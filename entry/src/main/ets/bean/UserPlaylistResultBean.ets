@@ -1,6 +1,9 @@
 /** 用户歌单列表请求结果实体类 */
 import { BaseResultBean } from 'lib_common'
 
+/**
+ * 歌单列表请求结果实体类
+ */
 export class UserPlaylistResultBean extends BaseResultBean {
   playlist: UserPlaylistBean[]
 }

@@ -1,6 +1,9 @@
 import { BaseViewModel, PagingLayoutMediator, RequestBean, ViewState } from 'lib_common';
 import { DynamicBean, DynamicResultBean, ApiConstant } from '../../..';
 
+/**
+ * 动态-关注ViewModel
+ */
 export class AttentionDynamicViewModel extends BaseViewModel {
   private lastTime: number = -1
 
@@ -19,7 +22,6 @@ export class AttentionDynamicViewModel extends BaseViewModel {
         pagingListConverter: (result: DynamicResultBean) => {
           return result.event.map((item: DynamicBean) => {
             item.jsonBean = JSON.parse(item.json.replace("\\\"", "\"")
-              // .replace("\\n\\n", "/")
               .replace("\\n", "/")
             )
             return item

@@ -1,7 +1,6 @@
 import { BaseViewModel, LogUtil, RequestBean, RouterUrls, ViewState } from 'lib_common';
-import { KVUtil } from 'lib_common/src/main/ets/util/KVUtil';
 import router from '@ohos.router';
-import { ApiConstant, KVConstants, STORAGE_USER_INFO, UserManager } from '../../../common';
+import { ApiConstant, UserManager } from '../../../common';
 import {
   AccountInfoResultBean,
   UserDetailResultBean,
@@ -11,10 +10,14 @@ import {
   UserInfoBean
 } from '../../../bean/LoginResultBean';
 
+/**
+ * 登陆ViewModel
+ */
 export class LoginViewModel extends BaseViewModel {
   checkAuthTimerId: number = -1
 
-  async qrcodeAuth(viewState: ViewState, authStepCallback: (step: LoginAuthStep) => void): Promise<QrcodeValueResultBean> {
+  async qrcodeAuth(viewState: ViewState,
+                   authStepCallback: (step: LoginAuthStep) => void): Promise<QrcodeValueResultBean> {
     if (this.checkAuthTimerId != -1) {
       clearInterval(this.checkAuthTimerId)
       this.checkAuthTimerId = -1
@@ -44,10 +47,11 @@ export class LoginViewModel extends BaseViewModel {
   }
 
 
-  private async checkAuthLoop(unikey: string, viewState: ViewState, authStepCallback: (step: LoginAuthStep) => void) {
-    // this.getAccountInfo(this.testCookie, viewState, authStepCallback)
+  private async checkAuthLoop(unikey: string,
+                              viewState: ViewState,
+                              authStepCallback: (step: LoginAuthStep) => void) {
     this.checkAuthTimerId = setInterval(async () => {
-      LogUtil.debug(`checkAuthLoop done`)
+      LogUtil.debug(`LoginViewModel::checkAuthLoop done`)
       const result: QrcodeAuthResultBean = await this.get<QrcodeAuthResultBean>(new RequestBean({
         url: ApiConstant.URL_CHECK_QRCODE,
         data: {
@@ -59,7 +63,7 @@ export class LoginViewModel extends BaseViewModel {
         },
         interceptWhenNoSuccess: false
       }))
-      LogUtil.debug(`checkAuthLoop::result::${JSON.stringify(result)}`)
+      LogUtil.debug(`LoginViewModel::checkAuthLoop::result::${JSON.stringify(result)}`)
       if (result.code == 803) {
         clearInterval(this.checkAuthTimerId)
         this.checkAuthTimerId = -1
@@ -70,7 +74,9 @@ export class LoginViewModel extends BaseViewModel {
     }, 4000)
   }
 
-  private async getAccountInfo(cookie: string, viewState: ViewState, authStepCallback: (step: LoginAuthStep) => void) {
+  private async getAccountInfo(cookie: string,
+                               viewState: ViewState,
+                               authStepCallback: (step: LoginAuthStep) => void) {
     authStepCallback(LoginAuthStep.SYNC_USER_INFO)
     const accountInfoResult: AccountInfoResultBean = await this.get<AccountInfoResultBean>(
       new RequestBean({
@@ -78,7 +84,7 @@ export class LoginViewModel extends BaseViewModel {
         data: { "cookie": cookie, },
         viewState: viewState
       }))
-    LogUtil.debug(`getAccountInfo::${JSON.stringify(accountInfoResult)}`)
+    LogUtil.debug(`LoginViewModel::getAccountInfo::${JSON.stringify(accountInfoResult)}`)
 
     if (accountInfoResult) {
       const userDetailResult: UserDetailResultBean = await this.get<UserDetailResultBean>(
@@ -92,8 +98,6 @@ export class LoginViewModel extends BaseViewModel {
           cookie: cookie,
           detail: userDetailResult
         })
-        // AppStorage.Set(STORAGE_USER_INFO, userInfo)
-        // await KVUtil.putString(KVConstants.KEY_USER_INFO, JSON.stringify(userInfo))
         UserManager.setUserInfo(userInfo)
         router.replaceUrl({ url: RouterUrls.Index })
       }

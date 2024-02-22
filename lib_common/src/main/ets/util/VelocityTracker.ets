@@ -1,3 +1,6 @@
+/**
+ * 触摸滑动速度记录器
+ */
 export default class VelocityTracker {
   private touchYEvents: TouchEvent[] = []
   private touchXEvents: TouchEvent[] = []

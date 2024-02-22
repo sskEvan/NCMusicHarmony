@@ -1,6 +1,9 @@
 import { BaseViewModel, PagingLayoutMediator, RequestBean, ViewState } from 'lib_common';
 import { CommentResultBean, ApiConstant } from '../../..';
 
+/**
+ * 动态评论ViewModel
+ */
 export class DynamicCommentViewModel extends BaseViewModel {
   async getCommentList(threadId: string, viewState: ViewState, pagingMediator: PagingLayoutMediator) {
 

@@ -12,6 +12,9 @@ import {
 } from '../..'
 import promptAction from '@ohos.promptAction'
 
+/**
+ * 动态item组件
+ */
 @Component
 export struct CpnDynamicItem {
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT

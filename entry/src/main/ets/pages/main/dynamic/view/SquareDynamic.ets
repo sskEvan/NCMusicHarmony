@@ -1,5 +1,8 @@
 import { AppTheme, THEME_TYPE, ThemeType } from 'lib_theme'
 
+/**
+ * 首页-动态-广场页面
+ */
 @Component
 export struct SquareDynamicPage {
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT

@@ -2,6 +2,9 @@ import { BaseViewModel, PagingLayoutMediator, RequestBean, ViewState } from 'lib
 import { AlbumResultBean } from '../../../../../bean/AlbumResultBean'
 import { ApiConstant } from '../../../../../common'
 
+/**
+ * 首页-我的-音乐-专辑ViewModel
+ */
 export class AlbumViewModel extends BaseViewModel {
   async getAlbumList(viewState: ViewState,
                      pagingMediator: PagingLayoutMediator) {

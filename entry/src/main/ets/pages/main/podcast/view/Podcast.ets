@@ -13,14 +13,12 @@ import {
 
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 
+/**
+ * 首页-播客页面
+ */
 @Component
 export struct PodcastPage {
-  // customDialogController: CustomDialogController = new CustomDialogController({
-  //   builder: BottomSheet(), // 结构 CustomBuilder结构 可以传组件结构
-  //   customStyle: true, // 自由设置样式-builder样式才不会受影响
-  //   alignment: DialogAlignment.Bottom,
-  //   autoCancel: false
-  // })
+
   @StorageLink(THEME_TYPE) themeType: number = ThemeType.DEFAULT
   @State message: string = 'PodcastPage'
   outerList: TabItem[] = [new TabItem(0, "outer 1"), new TabItem(1, "outer 2"), new TabItem(2, "outer 3"), new TabItem(3, "outer 4"), new TabItem(4, "outer 5"),
@@ -145,15 +143,6 @@ export struct PodcastPage {
     }
   }
 
-  @State innerHitTestMode: HitTestMode = HitTestMode.Default
-
-  @Builder BottomSheetBuilder() {
-    Text("bottomSheet").fontColor(AppTheme.palette(this.themeType).firstText)
-    Button("close")
-  }
-
-  gridList: number[] = [1, 2, 3, 4, 5]
-
   build() {
     Stack() {
       Column({ space: 20 }) {
@@ -180,45 +169,6 @@ export struct PodcastPage {
           TabPageBuilder: (index: number) => {
             this.OuterTabPageBuilder(index)
           } })
-
-        // Grid() {
-        //   // ForEach(this.gridList,
-        //   //   (item, index) => {
-        //   //     GridItem() {
-        //   //       Stack() {
-        //   //         Text(index.toString())
-        //   //       }.width(100).aspectRatio(1).backgroundColor(Color.Red)
-        //   //     }
-        //   //   },
-        //   // )
-        //   GridItem() {
-        //     Stack() {
-        //       Text("1")
-        //     }.width(100).aspectRatio(1).backgroundColor(Color.Red)
-        //   }
-        //   GridItem() {
-        //     Stack() {
-        //       Text("2")
-        //     }.width(100).aspectRatio(1).backgroundColor(Color.Red)
-        //   }
-        //   GridItem() {
-        //     Stack() {
-        //       Text("3")
-        //     }.width(100).aspectRatio(1).backgroundColor(Color.Red)
-        //   }
-        //   GridItem() {
-        //     Stack() {
-        //       Text("4")
-        //     }.width(100).aspectRatio(1).backgroundColor(Color.Red)
-        //   }
-        // }
-        // // .rowsGap(4)
-        // // .columnsGap(4)
-        // .maxCount(this.gridList.length)
-        // .rowsTemplate('1fr 1fr')
-        // .columnsTemplate('1fr 1fr 1fr')
-        // .layoutDirection(GridDirection.Row)
-        // .backgroundColor(Color.Yellow)
       }
     }
   }

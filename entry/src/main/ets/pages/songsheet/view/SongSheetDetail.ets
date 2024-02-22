@@ -16,8 +16,12 @@ import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 import router from '@ohos.router'
 import { SongBean, UserPlaylistBean, UserPlayListDetailResultBean } from '../../../bean'
 import songSheetDetailViewModel from '../viewmodel/SongSheetDetailViewModel'
-import { CpnMusicPlayBar, MusicPlayController, PlayerStatus, PlayStore, STORAGE_PLAY_STORE } from '../../..'
+import { CpnMusicPlayBar, EventIds, MusicPlayController, PlayerStatus } from '../../..'
+import emitter from '@ohos.events.emitter'
 
+/**
+ * 歌单详情页面
+ */
 @Entry
 @Component
 struct SongSheetDetailPage {
@@ -25,17 +29,22 @@ struct SongSheetDetailPage {
   @State private collapsibleMediator: CollapsibleMediator = new CollapsibleMediator((progress: number) => {
     this.collapsibleProgress = progress
   })
-  @Provide @Watch("playListBeanChange") playListBean: Partial<UserPlaylistBean> = {}
+  @Provide  playListBean: Partial<UserPlaylistBean> = {}
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT
-  @StorageLink(STORAGE_PLAY_STORE) playerStore: Partial<PlayStore> = {}
-
-  playListBeanChange() {
-    LogUtil.debug("playListBeanChange result.playlist.shareCount=" + this.playListBean.shareCount)
-  }
+  // 播放状态
+  @State playerStatus: PlayerStatus | undefined = undefined
 
   aboutToAppear() {
     this.playListBean = router.getParams() as UserPlaylistBean
+    // 监听播放状态
+    emitter.on({ eventId: EventIds.PLAYER_STATUS }, (data) => {
+      this.playerStatus = data.data.status
+    })
   }
+
+  // aboutToDisappear() {
+  //   emitter.off(EventIds.PLAYER_STATUS)
+  // }
 
   @Builder CustomerTitleBuilder() {
     Text(this.collapsibleProgress >= 0.4 ? this.playListBean.name : "歌单")
@@ -113,9 +122,9 @@ struct SongSheetDetailPage {
         },
         mediator: this.collapsibleMediator
       }).margin({
-        bottom: (this.playerStore.playerStats ?? PlayerStatus.IDLE !== PlayerStatus.IDLE) ? SizeConstant.MUSIC_PLAY_BAR_HEIGHT : 0
+        bottom: (this.playerStatus ?? PlayerStatus.NONE !== PlayerStatus.NONE) ? SizeConstant.MUSIC_PLAY_BAR_HEIGHT : 0
       })
-      if (this.playerStore.playerStats ?? PlayerStatus.IDLE !== PlayerStatus.IDLE) {
+      if (this.playerStatus ?? PlayerStatus.NONE !== PlayerStatus.NONE) {
         CpnMusicPlayBar()
       }
     }
