@@ -3,7 +3,7 @@ import { PagingLayoutMediator, ViewState } from '..'
 /**
  * 请求数据模型
  */
-export interface IRequestBean {
+export interface IRequestOptions {
   // 请求url
   url: string
   // 请求参数
@@ -22,7 +22,7 @@ export interface IRequestBean {
   interceptWhenNoSuccess?: boolean
 }
 
-export class RequestBean {
+export class RequestOptions {
   url: string
   data?: object
   viewState?: ViewState
@@ -32,16 +32,16 @@ export class RequestBean {
   pagingListConverter?: (result: object) => object[] = null
   interceptWhenNoSuccess?: boolean = true
 
-  constructor(bean: IRequestBean) {
-    this.url = bean.url
-    this.data = bean.data
-    this.viewState = bean.viewState
-    this.pagingMediator = bean.pagingMediator
-    this.pagingListConverter = bean.pagingListConverter
-    this.successCondition = bean.successCondition
-    this.emptyCondition = bean.emptyCondition
-    if (bean.interceptWhenNoSuccess != undefined) {
-      this.interceptWhenNoSuccess = bean.interceptWhenNoSuccess
+  constructor(options: IRequestOptions) {
+    this.url = options.url
+    this.data = options.data
+    this.viewState = options.viewState
+    this.pagingMediator = options.pagingMediator
+    this.pagingListConverter = options.pagingListConverter
+    this.successCondition = options.successCondition
+    this.emptyCondition = options.emptyCondition
+    if (options.interceptWhenNoSuccess != undefined) {
+      this.interceptWhenNoSuccess = options.interceptWhenNoSuccess
     }
   }
 }

@@ -1,6 +1,6 @@
 import { ApiConstant, EventIds, SongBean, SongUrlResultBean } from '../..'
 import media from '@ohos.multimedia.media'
-import { BaseViewModel, LogUtil, Request, RequestBean } from 'lib_common'
+import { BaseViewModel, LogUtil, ApiRequest, RequestOptions } from 'lib_common'
 import promptAction from '@ohos.promptAction'
 import emitter from '@ohos.events.emitter'
 
@@ -80,8 +80,8 @@ export class NCPlayer extends BaseViewModel {
     this.isSeeking = false
     LogUtil.debug("--NCPlayer--setDataSource:" + songBean.name)
     // 获取歌曲URL
-    const songUrlResult = await Request.get<SongUrlResultBean>(
-      new RequestBean({
+    const songUrlResult = await ApiRequest.get<SongUrlResultBean>(
+      new RequestOptions({
         url: ApiConstant.URL_SONG_URL,
         data: { "id": songBean.id, "br": 128000 },
       }))

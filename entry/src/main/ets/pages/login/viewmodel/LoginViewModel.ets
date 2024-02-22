@@ -1,4 +1,4 @@
-import { BaseViewModel, LogUtil, RequestBean, RouterUrls, ViewState } from 'lib_common';
+import { BaseViewModel, LogUtil, RequestOptions, RouterUrls, ViewState } from 'lib_common';
 import router from '@ohos.router';
 import { ApiConstant, UserManager } from '../../../common';
 import {
@@ -23,14 +23,14 @@ export class LoginViewModel extends BaseViewModel {
       this.checkAuthTimerId = -1
     }
     const qrcodeKeyResult: QrcodeKeyResultBean = await this.get<QrcodeKeyResultBean>(
-      new RequestBean({
+      new RequestOptions({
         url: ApiConstant.URL_QRCODE_KEY,
         data: { "timeStamp": new Date().getTime() },
         viewState: viewState
       }))
     if (qrcodeKeyResult) {
       const qrcodeValueResult = await this.get<QrcodeValueResultBean>(
-        new RequestBean({
+        new RequestOptions({
           url: ApiConstant.URL_QRCODE_VALUE,
           data: {
             "key": qrcodeKeyResult.data.unikey,
@@ -52,7 +52,7 @@ export class LoginViewModel extends BaseViewModel {
                               authStepCallback: (step: LoginAuthStep) => void) {
     this.checkAuthTimerId = setInterval(async () => {
       LogUtil.debug(`LoginViewModel::checkAuthLoop done`)
-      const result: QrcodeAuthResultBean = await this.get<QrcodeAuthResultBean>(new RequestBean({
+      const result: QrcodeAuthResultBean = await this.get<QrcodeAuthResultBean>(new RequestOptions({
         url: ApiConstant.URL_CHECK_QRCODE,
         data: {
           "key": unikey,
@@ -79,7 +79,7 @@ export class LoginViewModel extends BaseViewModel {
                                authStepCallback: (step: LoginAuthStep) => void) {
     authStepCallback(LoginAuthStep.SYNC_USER_INFO)
     const accountInfoResult: AccountInfoResultBean = await this.get<AccountInfoResultBean>(
-      new RequestBean({
+      new RequestOptions({
         url: ApiConstant.URL_ACCOUNT_INFO,
         data: { "cookie": cookie, },
         viewState: viewState
@@ -88,7 +88,7 @@ export class LoginViewModel extends BaseViewModel {
 
     if (accountInfoResult) {
       const userDetailResult: UserDetailResultBean = await this.get<UserDetailResultBean>(
-        new RequestBean({
+        new RequestOptions({
           url: ApiConstant.URL_USER_DETAIL,
           data: { "uid": accountInfoResult.account.id },
           viewState: viewState

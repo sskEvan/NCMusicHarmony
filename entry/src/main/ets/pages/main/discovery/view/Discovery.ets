@@ -48,16 +48,7 @@ export struct DiscoveryPage {
 
   build() {
     Column() {
-      CommonNetworkImage({ url: this.testUrl }
-      ).width(300).height(300).onClick(() => {
-        AppStorage.Set(THEME_TYPE, ThemeType.DARK)
-      })
-      Button("暂停").onClick(() => {
-      })
-      Button("播放").onClick(() => {
-      })
-      Button("单曲循环").onClick(() => {
-      })
+
     }.width("100%").height("100%").backgroundColor(AppTheme.palette(this.themeType).commonBackground)
 
     // ViewStatePagingLayout({

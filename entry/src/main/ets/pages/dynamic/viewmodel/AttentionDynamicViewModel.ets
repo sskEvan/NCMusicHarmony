@@ -1,4 +1,4 @@
-import { BaseViewModel, PagingLayoutMediator, RequestBean, ViewState } from 'lib_common';
+import { BaseViewModel, PagingLayoutMediator, RequestOptions, ViewState } from 'lib_common';
 import { DynamicBean, DynamicResultBean, ApiConstant } from '../../..';
 
 /**
@@ -11,7 +11,7 @@ export class AttentionDynamicViewModel extends BaseViewModel {
                        pagingMediator: PagingLayoutMediator) {
 
     const result = await this.get<DynamicResultBean>(
-      new RequestBean({
+      new RequestOptions({
         url: ApiConstant.URL_DYNAMIC,
         data: {
           "pagesize": pagingMediator.pageCount,

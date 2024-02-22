@@ -7,3 +7,6 @@ export * from './util'
 export * from './bean'
 
 export * from './viewmodel'
+
+export * from './api'
+

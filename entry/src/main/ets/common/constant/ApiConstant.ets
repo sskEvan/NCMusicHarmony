@@ -25,4 +25,6 @@ export class ApiConstant {
   static readonly URL_USER_DYNAMIC = "/user/event"
   // 获取动态评论
   static readonly URL_DYNAMIC_COMMENT = "/comment/event"
+  // 获取歌词
+  static readonly URL_LYRIC = "/lyric"
 }

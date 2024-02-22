@@ -12,6 +12,7 @@ import {
 } from 'lib_common'
 
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
+import { CpnLyric } from '../../..'
 
 /**
  * 首页-播客页面
@@ -163,12 +164,12 @@ export struct PodcastPage {
           // bgColor: Color.Red,
           // contentColor: Color.White
         })
-
-        ScrollableTabLayout({ mediator: this.outerMediator })
-        TabPager({ mediator: this.outerMediator,
-          TabPageBuilder: (index: number) => {
-            this.OuterTabPageBuilder(index)
-          } })
+        CpnLyric()
+        // ScrollableTabLayout({ mediator: this.outerMediator })
+        // TabPager({ mediator: this.outerMediator,
+        //   TabPageBuilder: (index: number) => {
+        //     this.OuterTabPageBuilder(index)
+        //   } })
       }
     }
   }

@@ -1,4 +1,4 @@
-import { BaseViewModel, PagingLayoutMediator, RequestBean, ViewState } from 'lib_common'
+import { BaseViewModel, PagingLayoutMediator, RequestOptions, ViewState } from 'lib_common'
 import { AlbumResultBean } from '../../../../../bean/AlbumResultBean'
 import { ApiConstant } from '../../../../../common'
 
@@ -10,7 +10,7 @@ export class AlbumViewModel extends BaseViewModel {
                      pagingMediator: PagingLayoutMediator) {
 
     this.get<AlbumResultBean>(
-      new RequestBean({
+      new RequestOptions({
         url: ApiConstant.URL_COLLECT_ALBUM_LIST,
         data: {
           "limit": pagingMediator.pageCount,

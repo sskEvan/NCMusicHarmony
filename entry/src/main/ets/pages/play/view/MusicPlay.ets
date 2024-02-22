@@ -218,7 +218,7 @@ export struct MusicPlayPage {
         Stack({ alignContent: Alignment.Top }) {
           if (this.showCpnLyric) {
             // 歌词组件
-            CpnLyric()
+            CpnLyric({ index: this.index, currentDuring: this.currentDuring })
               .transition({ type: TransitionType.Insert, opacity: 0, scale: { x: 0, y: 0 } })
               .transition({ type: TransitionType.Delete, opacity: 0, scale: { x: 0, y: 0 } })
           } else {

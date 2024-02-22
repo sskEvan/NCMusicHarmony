@@ -1,4 +1,4 @@
-import { BaseViewModel, PagingLayoutMediator, RequestBean, ViewState } from 'lib_common';
+import { BaseViewModel, PagingLayoutMediator, RequestOptions, ViewState } from 'lib_common';
 import { UserPlaylistBean, UserPlaylistResultBean } from '../../../../../bean/UserPlaylistResultBean';
 import { ApiConstant } from '../../../../../common';
 
@@ -12,7 +12,7 @@ export class SongSheetViewModel extends BaseViewModel {
                         pagingMediator: PagingLayoutMediator) {
 
     this.get<UserPlaylistResultBean>(
-      new RequestBean({
+      new RequestOptions({
         url: ApiConstant.URL_USER_PLAY_LIST,
         data: { "uid": uid },
         viewState: viewState,

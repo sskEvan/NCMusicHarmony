@@ -1,4 +1,4 @@
-import { BaseViewModel, PagingLayoutMediator, RequestBean, ViewState } from 'lib_common';
+import { BaseViewModel, PagingLayoutMediator, RequestOptions, ViewState } from 'lib_common';
 import { DynamicBean, UserDynamicResultBean } from '../../../../../bean/DynamicResultBean';
 import { ApiConstant } from '../../../../..';
 
@@ -14,7 +14,7 @@ export class UserDynamicViewModel extends BaseViewModel {
                            pagingMediator: PagingLayoutMediator) {
 
     const result = await this.get<UserDynamicResultBean>(
-      new RequestBean({
+      new RequestOptions({
         url: ApiConstant.URL_USER_DYNAMIC,
         data: {
           "uid": uid,
