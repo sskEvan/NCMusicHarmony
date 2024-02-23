@@ -13,8 +13,7 @@ export struct CollapsibleLayout {
   @BuilderParam private StickyHeaderBuilder: () => void = null
   // 页面内容部分，通常为列表
   @BuilderParam private ContentBuilder: () => void = null
-  @ObjectLink @Watch("mediatorChange")
-  private mediator: CollapsibleMediator
+  @ObjectLink private mediator: CollapsibleMediator
 
   // 标题栏高度
   @State private appBarHeight: number = 0
@@ -25,17 +24,7 @@ export struct CollapsibleLayout {
   //  组件高度
   @State private totalHeight: number = 0
   private lastProgress = 0
-  private lastInnerScrollIndex = 0
 
-  mediatorChange() {
-    if (this.lastInnerScrollIndex != this.mediator.curInnerScrollerIndex) {
-      if (this.lastProgress == 1) {
-        this.mediator.outScroller.scrollTo({ xOffset: 0, yOffset: this.mediator.coordinatorScrollableHeight,
-          animation: { duration: 300, curve: Curve.Linear } })
-      }
-      this.lastInnerScrollIndex = this.mediator.curInnerScrollerIndex
-    }
-  }
 
   calculateContentHeight() {
     if (this.totalHeight != 0 && this.stickyHeaderHeight != 0 && this.appBarHeight != 0) {

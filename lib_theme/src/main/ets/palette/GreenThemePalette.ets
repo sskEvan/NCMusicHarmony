@@ -4,9 +4,9 @@ import { IThemePalette } from '.'
 /**
  * 默认主题取色盘
  */
-export class DefaultThemePalette implements IThemePalette {
-  primary: ResourceColor = "#FFF0484E"
-  secondary: ResourceColor = "#FFF0888C"
+export class GreenThemePalette implements IThemePalette {
+  primary: ResourceColor = "#FF3EC73E"
+  secondary: ResourceColor = "#FF9FE69F"
   pure: ResourceColor = "#FFFFFFFF"
   divider: ResourceColor = "#FFDDDDDD"
   commonBackground: ResourceColor = "#FFFFFFFF"

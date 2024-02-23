@@ -1,7 +1,7 @@
 import { ClickEffectLayout, CpnLoading, ListDataSource } from 'lib_common'
 import { SizeConstant } from 'lib_common'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
-import { MusicPlayController, SongBean, PlayerMode, EventIds } from '../../../..'
+import { MusicPlayController, SongBean, PlayerMode, EventIds, PlayerStatus } from '../../../..'
 import emitter from '@ohos.events.emitter'
 
 /**
@@ -13,6 +13,8 @@ export struct CurrentMusicPlayList {
   lazyDataSource: ListDataSource = new ListDataSource()
   // 播放模式
   @State playerMode: PlayerMode | undefined = undefined
+  // 播放状态
+  @State playerStatus: PlayerStatus | undefined = undefined
   // 当前播放索引
   @State playerIndex: number = 0
 
@@ -20,6 +22,7 @@ export struct CurrentMusicPlayList {
     this.lazyDataSource.reloadData(MusicPlayController.playList)
     this.playerMode = MusicPlayController.playerMode
     this.playerIndex = MusicPlayController.playerIndex
+    this.playerStatus = MusicPlayController.playerStatus
     // 监听播放模式
     emitter.on({ eventId: EventIds.PLAYER_MODE }, (data) => {
       const newPlayerMode = data.data.playerMode
@@ -32,6 +35,10 @@ export struct CurrentMusicPlayList {
     // 监听播放列表索引
     emitter.on({ eventId: EventIds.PLAYER_INDEX }, (data) => {
       this.playerIndex = data.data.index
+    })
+    // 监听播放播放状态
+    emitter.on({ eventId: EventIds.PLAYER_STATUS }, (data) => {
+      this.playerStatus = data.data.status
     })
   }
 
@@ -130,7 +137,7 @@ export struct CurrentMusicPlayList {
       MusicPlayController.play(index)
     } }) {
       Row() {
-        if (index == this.playerIndex) {
+        if (index == this.playerIndex && this.playerStatus == PlayerStatus.STARTED) {
           CpnLoading({ loadingWidth: 13, loadingHeight: 11 }).margin({ right: SizeConstant.SPACE_M })
         }
         Text() {

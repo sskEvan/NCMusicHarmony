@@ -4,7 +4,7 @@
  */
 @Component
 export struct CommonNetworkImage {
-  url: string = ""
+  url: string | undefined = undefined
   placeHolder: Resource = $r('app.media.ic_default_place_holder')
   @State status: NetworkImageLoadStatus = NetworkImageLoadStatus.LOADING
   @State imageOpacity: number = 0

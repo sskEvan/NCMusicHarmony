@@ -8,21 +8,6 @@
         "signingConfig": "default"
       }
     ],
-    "signingConfigs": [
-      {
-        "name": "default",
-        "type": "HarmonyOS",
-        "material": {
-          "storePassword": "0000001BF6C14DB9E3C0BB32CBC57A4545CFDE665BD558E5AC24A8FAE11AC9E923F265DCF5B5E71147EA38",
-          "certpath": "/Users/anmin83/Desktop/harmony_keystore/NCMusic.cer",
-          "keyAlias": "NCMusic",
-          "keyPassword": "0000001BFDCBA021432E4DBB0D4C026F14B14353F6C7B0BF45317C06A64E9FBE402A203FA43E3FDB98CF63",
-          "profile": "/Users/anmin83/Desktop/harmony_keystore/NCMusicDebug.p7b",
-          "signAlg": "SHA256withECDSA",
-          "storeFile": "/Users/anmin83/Desktop/harmony_keystore/NCMusicKeyStore.p12"
-        }
-      }
-    ]
   },
   "modules": [
     {

@@ -11,7 +11,7 @@ export struct CpnPodcastSheetItem {
   build() {
     ClickEffectLayout() {
       Row() {
-        Image($r('app.media.ic_test_2'))
+        Image($r('app.media.ic_default_place_holder'))
           .width(48)
           .height(48)
           .borderRadius(SizeConstant.RADIUS_M)

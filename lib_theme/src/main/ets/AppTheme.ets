@@ -1,10 +1,13 @@
-import { DarkThemePalette, DefaultThemePalette, IThemePalette, ThemeType } from '.'
+import { DarkThemePalette, DefaultThemePalette, IThemePalette, OriginThemePalette, GreenThemePalette, ThemeType } from '.'
 
 // 默认主题
-const defaultThemePalette = new DefaultThemePalette()
+export const defaultThemePalette = new DefaultThemePalette()
 // 黑色主题
-const darkThemePalette = new DarkThemePalette()
-
+export const darkThemePalette = new DarkThemePalette()
+// 橙色主题
+export const originThemePalette = new OriginThemePalette()
+// 绿色主题
+export const greenThemePalette = new GreenThemePalette()
 
 export class AppTheme {
   /**
@@ -15,6 +18,10 @@ export class AppTheme {
       return defaultThemePalette
     } else if (themeType == ThemeType.DARK) {
       return darkThemePalette
+    } else if (themeType == ThemeType.ORIGIN) {
+      return originThemePalette
+    } else if (themeType == ThemeType.GREEN) {
+      return greenThemePalette
     } else {
       return defaultThemePalette
     }

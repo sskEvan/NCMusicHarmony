@@ -1,12 +1,13 @@
 import { CommonAppBar, TabItem, TabLayout, TabLayoutPagerMediator, TabPager, SizeConstant } from 'lib_common'
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
-import { AttentionDynamicPage, SquareDynamicPage} from '../../../..'
+import { AttentionDynamicPage, SquareDynamicPage, STORAGE_MAIN_DRAWER_TOGGLE} from '../../../..'
 
 /**
  * 首页-动态页面
  */
 @Component
 export struct DynamicPage {
+  @StorageLink(STORAGE_MAIN_DRAWER_TOGGLE) mainDrawerToggle: boolean = false
   @StorageLink(THEME_TYPE) themeType: ThemeType = ThemeType.DEFAULT
   private tabItems: TabItem[] = [new TabItem(0, "关注"), new TabItem(1, "广场")]
   @State  private tabMediator: TabLayoutPagerMediator = new TabLayoutPagerMediator({
@@ -38,6 +39,9 @@ export struct DynamicPage {
   build() {
     Column() {
       CommonAppBar({ leftIcon: $r('app.media.ic_menu'),
+        leftIconClickCallback : () => {
+          this.mainDrawerToggle = true
+        },
         CustomerTitleBuilder: () => {
           this.CustomerTitleBuilder()
         },

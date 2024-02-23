@@ -9,16 +9,21 @@ import {
   TabLayoutPagerMediator,
   TabPager
 } from 'lib_common'
-import { IUserInfoBean, UserInfoBean } from '../../../../bean/LoginResultBean'
-import { CpnMyHeader } from './CpnMyHeader'
-import { MyDynamicPage } from '../dynamic/view/MyDynamic'
-import { AlbumMusicPage } from '../music/view/AlbumMusic'
-import { CollectMusicPage } from '../music/view/CollectMusic'
-import { CreateMusicPage } from '../music/view/CreateMusic'
-import { AllPodcastPage } from '../podcast/view/AllPodcast'
-import { MyPodcastPage } from '../podcast/view/MyPodcast'
-import { VoiceBookPage } from '../podcast/view/VoiceBook'
-import { STORAGE_MAIN_DRAWER_TOGGLE, STORAGE_USER_INFO } from '../../../../common'
+import {
+  IUserInfoBean,
+  UserInfoBean,
+  CpnMyHeader,
+  MyDynamicPage,
+  AlbumMusicPage,
+  CollectMusicPage,
+  CreateMusicPage,
+  AllPodcastPage,
+  MyPodcastPage,
+  VoiceBookPage,
+  STORAGE_MAIN_DRAWER_TOGGLE,
+  STORAGE_USER_INFO
+} from '../../../..'
+
 import { AppTheme, ThemeType, THEME_TYPE } from 'lib_theme'
 
 /**
@@ -30,7 +35,6 @@ export struct MyPage {
   @StorageLink(THEME_TYPE) @Watch("themeChange") themeType: ThemeType = ThemeType.DEFAULT
   @StorageLink(STORAGE_USER_INFO) userInfo: UserInfoBean = new UserInfoBean({} as IUserInfoBean)
   @StorageLink(STORAGE_MAIN_DRAWER_TOGGLE) mainDrawerToggle: boolean = false
-
   private myTabItems: TabItem[] = [new TabItem(0, "音乐"), new TabItem(1, "播客"), new TabItem(2, "动态")]
   private musicTabItems: TabItem[] = [new TabItem(0, "创建"), new TabItem(1, "收藏"), new TabItem(2, "专辑")]
   private podcastTabItems: TabItem[] = [new TabItem(0, "全部"), new TabItem(1, "播客"), new TabItem(2, "有声书")]
@@ -152,23 +156,31 @@ export struct MyPage {
         TabLayout({
           mediator: this.myTabMediator,
         })
-        if (this.myTabMediator.currentIndex == 0) {
+        if (this.myTabMediator.recorder.targetIndex == 0) {
           TabLayout({
             showIndicator: false,
             mediator: this.musicTabMediator,
             TabItemBuilder: (item: TabItem) => {
               this.MusicTabItemBuilder(item)
             }
-          }).width(170).margin({ top: SizeConstant.SPACE_S })
-        }
-        if (this.myTabMediator.currentIndex == 1) {
+          }).width(170)
+        } else if (this.myTabMediator.recorder.targetIndex == 1) {
           TabLayout({
             showIndicator: false,
             mediator: this.podcastTabMediator,
             TabItemBuilder: (item: TabItem) => {
               this.PodcastTabItemBuilder(item)
             }
-          }).width(170).margin({ top: SizeConstant.SPACE_S })
+          }).width(170)
+        } else if (this.myTabMediator.recorder.targetIndex == 2) {
+          Stack({ alignContent: Alignment.Start }) {
+            Text("我的动态")
+              .fontSize(SizeConstant.TEXT_M)
+              .fontColor(AppTheme.palette(this.themeType).firstText)
+              .textAlign(TextAlign.Center)
+              .fontWeight(FontWeight.Bold)
+              .margin({ left: SizeConstant.SPACE_XL })
+          }.width("100%").height(34)
         }
       }
       .backgroundColor(AppTheme.palette(this.themeType).commonBackground)
@@ -194,7 +206,9 @@ export struct MyPage {
   @Builder PodcastTabItemBuilder(item: TabItem) {
     Text(item.name)
       .fontSize(SizeConstant.TEXT_M)
-      .fontColor(this.podcastTabMediator.currentIndex === item.index ? $r('app.color.first_text') : $r('app.color.third_text'))
+      .fontColor(this.podcastTabMediator.currentIndex === item.index
+        ? AppTheme.palette(this.themeType).firstText
+        : AppTheme.palette(this.themeType).thirdText)
       .textAlign(TextAlign.Center)
       .fontWeight(this.podcastTabMediator.currentIndex === item.index ? FontWeight.Bold : FontWeight.Normal)
       .height(34)

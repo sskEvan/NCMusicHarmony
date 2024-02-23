@@ -3,7 +3,8 @@ import {
   CollapsibleLayout,
   CollapsibleMediator,
   CommonAppBar,
-  LogUtil,
+CommonNetworkImage,
+LogUtil,
   PagingLayoutMediator,
   RouterUrls,
   ScreenUtils,
@@ -190,14 +191,15 @@ struct SongSheetDetailScrollableHeader {
               .margin({ bottom: SizeConstant.SPACE_M })
               .opacity(1 - this.collapsibleProgress)
             Row() {
-              Image($r('app.media.ic_default_avatar'))
+              CommonNetworkImage({url : this.playListBean.creator?.avatarUrl, placeHolder : $r('app.media.ic_default_avatar')})
                 .width(18)
                 .height(18)
                 .borderRadius(9)
+                .clip(true)
                 .margin({ right: SizeConstant.SPACE_S })
                 .opacity(1 - this.collapsibleProgress)
 
-              Text(this.playListBean.creator.nickname)
+              Text(this.playListBean.creator?.nickname || "未知")
                 .fontSize(SizeConstant.TEXT_M)
                 .fontColor("#FFEEEEEE")
             }.alignItems(VerticalAlign.Center)

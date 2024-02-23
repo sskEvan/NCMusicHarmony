@@ -7,6 +7,7 @@ export interface IThemePalette {
   deepenBackground: ResourceColor,
   titleBackground: ResourceColor,
   navBarBackground: ResourceColor,
+  drawerBackground: ResourceColor,
   firstText: ResourceColor,
   secondText: ResourceColor,
   thirdText: ResourceColor,

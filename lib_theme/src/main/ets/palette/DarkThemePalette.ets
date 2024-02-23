@@ -12,6 +12,7 @@ export class DarkThemePalette implements IThemePalette {
   deepenBackground: ResourceColor = "#FF444444"
   titleBackground: ResourceColor = "#FF333333"
   navBarBackground: ResourceColor = "#FF333333"
+  drawerBackground: ResourceColor = "#FF333333"
   firstText: ResourceColor = "#FFFFFFFF"
   secondText: ResourceColor = "#FFBBBBBB"
   thirdText: ResourceColor = "#FF999999"

@@ -1,3 +1,5 @@
 export * from './IThemePalette'
 export * from './DefaultThemePalette'
 export * from './DarkThemePalette'
+export * from './GreenThemePalette'
+export * from './OriginThemePalette'
