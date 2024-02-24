@@ -55,7 +55,7 @@ Compose Desktop的仿网易云桌面应用[NCMusicDesktop](https://github.com/ss
 嵌套滑动在日常开发中随处可见，但是在api9中，却没有简单的api提供给开发者快速实现
 （在b站看到一个视频，在api10中，官方已经新增相关的nested api来处理这类场景，可惜我还不配使用api10），所以自定义了CollapsibleLayout来处理这种场景。  
 先看一张图  
-![img](https://github.com/sskEvan/NCMusicHarmony/blob/master/screenshot/CollapsibleLayout.jpg)  
+![img](https://github.com/sskEvan/NCMusicHarmony/blob/master/screenshot/CollapsibleLayout.png)  
 - AppBar：固定在页面顶部的标题栏  
 - ScrollHeader：可滚动头部
 - StickyHeader：粘性头部，随着页面滚动后吸附在AppBar下方
