@@ -1,13 +1,13 @@
 import { ApiConstant, EventIds, SongBean, SongUrlResultBean } from '../..'
 import media from '@ohos.multimedia.media'
-import { BaseViewModel, LogUtil, ApiRequest, RequestOptions } from 'lib_common'
+import { LogUtil, ApiRequest, RequestOptions } from 'lib_common'
 import promptAction from '@ohos.promptAction'
 import emitter from '@ohos.events.emitter'
 
 /**
  * 音乐播放器，通过AVPlayer实现音乐播放功能
  */
-export class NCPlayer extends BaseViewModel {
+export class NCPlayer  {
   static player: media.AVPlayer | null = null
   private static lastStatus: PlayerStatus | null = null
   private static isSeeking = false
